@@ -1,11 +1,13 @@
 package service;
 
+import domain.Buyer;
+
 public interface BuyerService {
 
 	// 구매자 등록
-	
+	void registBuyer();
 	// 구매자 로그인
-	
+	Buyer buyerLogin();
 	// 구매자 정보 수정
 	void modifyBuyer(String id);
 	

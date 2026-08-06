@@ -22,6 +22,18 @@ public final class Reader {
 		return readString();
 	}
 	
+	public static String validateInput(String message) {
+		String input = null;
+		while (true) {
+			input = readString(message).trim();
+			if (input.isBlank()) {
+				System.out.println(message + "가 입력되지 않았습니다. \n다시 시도해주십시오.");
+				continue;
+			}
+			return input;
+		}
+	}
+	
 	public static int readInt() {
 		return readInt("");
 	}
