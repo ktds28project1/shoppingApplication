@@ -1,10 +1,11 @@
 package serviceimpl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
-
 import domain.Buyer;
+import domain.Product;
 import service.BuyerService;
 import util.Reader;
 
@@ -90,6 +91,25 @@ public class BuyerServiceImpl implements BuyerService {
 		// TODO Auto-generated method stub
 		
 	}
+
+    @Override
+    public void searchProductByKeyword(List<Product> productList) {
+        final String keyword = Reader.readString("검색어를 입력하세요: "); 
+
+        List<Product> searchedProducts = new ArrayList<>();
+        productList.stream() // Stream<Product>
+                   .filter(product -> product.getName().contains(keyword)) // Stream<Product>
+                   .forEach(product -> searchedProducts.add(product)); // void
+      
+
+        for (Product p : searchedProducts) {
+          printSearchedProduct(p);
+        }
+    }
+    
+    private void printSearchedProduct(Product product) {
+      
+    }
 
 
 }
