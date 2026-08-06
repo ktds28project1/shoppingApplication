@@ -14,54 +14,36 @@ public class SellerServiceImpl implements SellerService {
 	public SellerServiceImpl() {
 		sellerList = new HashMap<>();
 	}
-
-	public boolean isEmpty(String str) {
-		str = str.trim();
-		Predicate<String> Value = (s) -> s == (null) || s.isBlank();
-		boolean isEmpty = Value.test(str);
-		if (isEmpty) {
-			System.out.println("공백은 입력하실수 없습니다.");
-			return true;
-		}
-		return false;
-	}
-
+	
+	
+	//사업자 등록 
 	@Override
 	public void addSeller() {
 
-		String name = null;
-		String BusinessNumber = null;
-		String RepresentativeName = null;
-		String RepresentativeNumber = null;
-		String SellerAddress = null;
-		String SellerPassWord = null;
+		
 
-		name = Reader.readString("이름 : ").trim();
-		BusinessNumber = Reader.readString("사업자 등록번호 : ").trim();
-		RepresentativeName = Reader.readString("대표자 명 : ").trim();
-		RepresentativeNumber = Reader.readString("대표자 연락처 : ").trim();
-		SellerAddress = Reader.readString("사업장 주소 : : ").trim();
-		SellerPassWord = Reader.readString("판매자 비밀번호 : ").trim();
+		String name = Reader.validateInput("이름 : ");
+		String BusinessNumber = Reader.validateInput("사업자 등록번호 : ");
+		String RepresentativeName = Reader.validateInput("대표자 명 : ");
+		String RepresentativeNumber = Reader.validateInput("대표자 연락처 : ");
+		String SellerAddress = Reader.validateInput("사업장 주소 : : ");
+		String SellerPassWord = Reader.validateInput("판매자 비밀번호 : ");
 
-		if (isEmpty(name) || isEmpty(BusinessNumber) || isEmpty(RepresentativeName) || isEmpty(RepresentativeNumber)
-				|| isEmpty(SellerAddress) || isEmpty(SellerPassWord)) {
+		
+
+		if (sellerList.containsKey(BusinessNumber)) {
+
+			System.out.println("중복된 사업자 등록번호입니다");
 			return;
-		}
-
-		for (int i = 0; i < sellerList.size(); i++) {
-
-			if (sellerList.get(i).getUserId().equals(BusinessNumber)) {
-
-				System.out.println("중복된 사업자 등록번호입니다");
-				return;
-			}
 		}
 
 		this.sellerList.put(BusinessNumber, new Seller(name, BusinessNumber, RepresentativeName, RepresentativeNumber,
 				SellerAddress, SellerPassWord));
 
 	}
-
+	
+	
+	//판매자 로그인 
 	@Override
 	public Seller SellerLogin() {
 
@@ -88,8 +70,8 @@ public class SellerServiceImpl implements SellerService {
 			}
 
 			equals = true;
-			if(equals) {
-				System.out.println(sellerList.get(businessNumber).getName()+ "님 환영합니다.");
+			if (equals) {
+				System.out.println(sellerList.get(businessNumber).getName() + "님 환영합니다.");
 				return sellerList.get(businessNumber);
 			}
 
