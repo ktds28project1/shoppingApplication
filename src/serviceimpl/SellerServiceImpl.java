@@ -79,4 +79,30 @@ public class SellerServiceImpl implements SellerService {
 		return null;
 	}
 
+	//판매자 수정
+	@Override
+	public void modifySeller(Seller seller) {
+		System.out.println(" 판매자 정보 수정 ");
+		
+		String password = Reader.readString("비밀번호를 입력하세요: ");
+		if (!seller.getPassword().equals(password)) {
+			System.out.println("잘못된 비밀번호 입니다.");
+			return;
+		}
+		
+		// 수정할 정보 입력
+		String companyName = Reader.validateInput("변경할 상호명");
+        String ownerName = Reader.validateInput("변경할 대표자명");
+        String ownerPhone = Reader.validateInput("변경할 대표자 연락처");
+        String address = Reader.validateInput("변경할 사업장 주소");
+        String newPassword = Reader.validateInput("변경할 비밀번호");
+        
+        
+        seller.setName(companyName);          // 상호명 (User)
+        seller.setOwnerName(ownerName);       // 대표자명 (Seller)
+        seller.setPhoneNumber(ownerPhone);    // 연락처 (User)
+        seller.setAddress(address);           // 주소 (User)
+        seller.setPassword(newPassword);      // 비밀번호 (User)
+	}
+
 }

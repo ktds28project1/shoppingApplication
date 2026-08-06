@@ -1,20 +1,27 @@
 package serviceimpl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import domain.Buyer;
+import domain.Order;
+import domain.Product;
 import service.BuyerService;
 import util.Reader;
 
 public class BuyerServiceImpl implements BuyerService {
 	private Map<String, Buyer> buyerMap;
+	private List<Order> orderList;
+	
 
 	public BuyerServiceImpl() {
 		this.buyerMap = new HashMap<>();
+		this.orderList = new ArrayList<>();
 	}
 
 	public boolean findUserId(String userId) {
@@ -114,5 +121,11 @@ public class BuyerServiceImpl implements BuyerService {
 		} else {
 			System.out.println("비밀번호를 틀렸습니다.");
 		}
+	}
+
+	@Override
+	public void buyProduct(Buyer buyer, Map<Long, Product> productMap) {
+		
+		
 	}
 }
