@@ -16,9 +16,8 @@ public class Buyer extends User{
 	/** 활성화 여부 */
 	private boolean active;
 	
-	public Buyer(String id, String name, String password, String address, String phone, long money) {
+	public Buyer(String id, String name, String password, String address, String phone) {
 		super(id, name, password, address, phone);
-		this.money = money;
 		this.active = true;
 	}
 

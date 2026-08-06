@@ -5,9 +5,9 @@ import domain.Buyer;
 public interface BuyerService {
 
 	// 구매자 등록
-	
+	void registBuyer();
 	// 구매자 로그인
-	
+	Buyer buyerLogin();
 	/**
 	 * 구매자를 받아 정보를 수정하는 메소드
 	 * 내부에서 한번 더 비밀번호 입력 받음
