@@ -33,6 +33,7 @@ public class Product {
 		this.price = price;
 		this.stock = stock;
 		this.description = description;
+		this.active = true; // 기본 판매 상태 활성화
 	}
 
 	public String getName() {

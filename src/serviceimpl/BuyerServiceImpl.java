@@ -4,16 +4,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+
 import domain.Buyer;
+import domain.Order;
 import domain.Product;
 import service.BuyerService;
 import util.Reader;
 
 public class BuyerServiceImpl implements BuyerService {
 	private Map<String, Buyer> buyerMap;
+	private List<Order> orderList;
+	
 
 	public BuyerServiceImpl() {
 		this.buyerMap = new HashMap<>();
+		this.orderList = new ArrayList<>();
 	}
 
 	public boolean findUserId(String userId) {
@@ -82,14 +90,20 @@ public class BuyerServiceImpl implements BuyerService {
 
 	@Override
 	public void modifyBuyer(Buyer buyer) {
-		// TODO Auto-generated method stub
-		
+		this.setBuyer(buyer, "탈퇴한 사용자 수정 발생", () -> true,  () -> {
+			// FIXME 입력 유효성 검사 유무 확인 필요
+			buyer.setName(Reader.readString("변경할 이름: "));
+			buyer.setPassword(Reader.readString("변경할 비밀번호: "));
+			buyer.setAddress(Reader.readString("변경할 주소: "));
+			buyer.setPhoneNumber(Reader.readString("변경할 전화번호: "));
+		});
 	}
 
 	@Override
 	public void deleteBuyer(Buyer buyer) {
-		// TODO Auto-generated method stub
-		
+		this.setBuyer(buyer, "탈퇴한 사용자 재탈퇴 시도 발생"
+					 , () -> buyer.getUserId() == Reader.readString("아이디를 입력하세요: ") 
+					 , () -> buyer.setActive(false));
 	}
 
     @Override
@@ -103,7 +117,7 @@ public class BuyerServiceImpl implements BuyerService {
       
 
         for (Product p : searchedProducts) {
-          printSearchedProduct(p);
+            printSearchedProduct(p);
         }
     }
     
@@ -111,5 +125,26 @@ public class BuyerServiceImpl implements BuyerService {
       
     }
 
+	private void setBuyer(Buyer buyer, String err, Supplier<Boolean> check, Runnable action) {
+		if (!buyer.isActive()) {
+			throw new IllegalStateException(err);
+		}
+		
+		if (!check.get()) {
+			System.out.println("아이디가 틀렸습니다.");
+		}
+		
+		String password = Reader.readString("비밀번호를 입력해주세요: ");
+		if (buyer.getPassword().equals(password)) {
+			action.run();
+		} else {
+			System.out.println("비밀번호를 틀렸습니다.");
+		}
+	}
 
+	@Override
+	public void buyProduct(Buyer buyer, Map<Long, Product> productMap) {
+		
+		
+	}
 }

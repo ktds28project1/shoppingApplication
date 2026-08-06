@@ -1,6 +1,8 @@
 package service;
 
 import java.util.List;
+import java.util.Map;
+
 import domain.Buyer;
 import domain.Product;
 
@@ -36,6 +38,7 @@ public interface BuyerService {
 	// 상품 상세 조회
 	
 	// 상품 구매
+	void buyProduct(Buyer buyer, Map<Long, Product> productMap);
 	
 	// 상품 리뷰 등록
 	
