@@ -11,8 +11,10 @@ public interface SellerService {
 	Seller SellerLogin();
     
 	// 판매자 상품관리
+	void manageProducts(Seller seller);
+
 	void modifySeller(Seller seller);
-	
+
 	// 문의 조회
 	
 	// 문의 답변
