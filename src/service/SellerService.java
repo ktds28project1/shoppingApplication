@@ -1,12 +1,14 @@
 package service;
 
+import domain.Seller;
+
 public interface SellerService {
 
 	// 판매자 등록
 	void addSeller();
 	
 	// 판매자 로그인
-    void SellerLogin();
+	Seller SellerLogin();
     
 	// 판매자 상품관리
 
