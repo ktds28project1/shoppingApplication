@@ -80,15 +80,16 @@ public class BuyerServiceImpl implements BuyerService {
 	}
 
 	@Override
-	public void modifyBuyer(String id) {
+	public void modifyBuyer(Buyer buyer) {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
-	public void deleteBuyer(String id) {
+	public void deleteBuyer(Buyer buyer) {
 		// TODO Auto-generated method stub
-
+		
 	}
+
 
 }

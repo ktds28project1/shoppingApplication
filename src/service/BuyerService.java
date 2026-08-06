@@ -8,11 +8,21 @@ public interface BuyerService {
 	void registBuyer();
 	// 구매자 로그인
 	Buyer buyerLogin();
-	// 구매자 정보 수정
-	void modifyBuyer(String id);
+	/**
+	 * 구매자를 받아 정보를 수정하는 메소드
+	 * 내부에서 한번 더 비밀번호 입력 받음
+	 * @param buyer 로그인한 구매자
+	 * @throws IllegalStateException 이미 탈퇴한 사용자인 경우 예외 발생
+	 */
+	void modifyBuyer(Buyer buyer);
 	
-	// 구매자 탈퇴
-	void deleteBuyer(String id);
+	/**
+	 * 구매자를 받아 탈퇴 시키는 메소드
+	 * 내부에서 한번 더 비밀번호 입력 받음
+	 * @param buyer 로그인한 구매자
+	 * @throws IllegalStateException 이미 탈퇴한 사용자인 경우 예외 발생
+	 */
+	void deleteBuyer(Buyer buyer);
 	
 	// 상품 조회
 	
