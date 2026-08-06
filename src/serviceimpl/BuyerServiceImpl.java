@@ -22,13 +22,13 @@ public class BuyerServiceImpl implements BuyerService {
 	private Map<Long, Product> productList;
 	private User user;
 	private List<Order> orderList;
-	
+
 	public BuyerServiceImpl() {
 		this.buyerMap = new HashMap<>();
 		this.orderList = new ArrayList<>();
 		this.productList = new HashMap<>();
 		this.inquiryList = new HashMap<>();
-		
+
 
 	}
 
@@ -57,16 +57,16 @@ public class BuyerServiceImpl implements BuyerService {
 		}
 		return false;
 	}
-	
+
 	public void notFoundProductNumber(long productNumber) {
-		
-		
+
+
 		if (this.productList.containsKey(productNumber)) {
 			return;
 		}
 
 		System.out.println("유효하지 않은 상품번호입니다.");
-		
+
 	}
 
 	@Override
@@ -121,23 +121,23 @@ public class BuyerServiceImpl implements BuyerService {
 	@Override
 	public void deleteBuyer(Buyer buyer) {
 		this.setBuyer(buyer, "탈퇴한 사용자 재탈퇴 시도 발생"
-					 , () -> buyer.getUserId() == Reader.readString("아이디를 입력하세요: ") 
+					 , () -> buyer.getUserId() == Reader.readString("아이디를 입력하세요: ")
 					 , () -> buyer.setActive(false));
 	}
 
     @Override
     public void searchProductByKeyword(List<Product> productList) {
-        final String keyword = Reader.readString("검색어를 입력하세요: "); 
+        final String keyword = Reader.readString("검색어를 입력하세요: ");
 
         List<Product> searchedProducts = new ArrayList<>();
         productList.stream() // Stream<Product>
                    .filter(product -> product.getName().contains(keyword)) // Stream<Product>
                    .forEach(product -> searchedProducts.add(product)); // void
-      
+
 
         printSearchedProduct(searchedProducts);
     }
-    
+
     private void printSearchedProduct(List<Product> productList) {
       for (Product p : productList) {
         // TODO 검색된 상품 리스트 출력 구현
@@ -147,18 +147,18 @@ public class BuyerServiceImpl implements BuyerService {
     @Override
     public void printProductDetailByNumber(List<Product> productList) {
       // TODO Auto-generated method stub
-      
+
     }
-    
+
 	private void setBuyer(Buyer buyer, String err, Supplier<Boolean> check, Runnable action) {
 		if (!buyer.isActive()) {
 			throw new IllegalStateException(err);
 		}
-		
+
 		if (!check.get()) {
 			System.out.println("아이디가 틀렸습니다.");
 		}
-		
+
 		String password = Reader.readString("비밀번호를 입력해주세요: ");
 		if (buyer.getPassword().equals(password)) {
 			action.run();
@@ -169,19 +169,19 @@ public class BuyerServiceImpl implements BuyerService {
 
 	@Override
 	public void buyProduct(Buyer buyer, Map<Long, Product> productMap) {
-		
-		
+
+
 	}
 
 	@Override
 	public void addInquiry() {
 
-		
+
 
 		long inquiryNumber = this.inquiryList.size() + 1;
 
 		long productNumber = (long) Reader.readInt("문의하실 상품번호 ");
-		
+
 		// 상품번호가 맞지않을 경우
 		notFoundProductNumber(productNumber);
 
@@ -191,15 +191,15 @@ public class BuyerServiceImpl implements BuyerService {
 		String content = Reader.readString("문의 내용을 작성해주세요");
 
 		this.inquiryList.put(productNumber, new Inquiry(inquiryNumber, productNumber, inquiryUserId, title, content));
-		
-		
+
+
 	}
 
 
 
 	public void printOrderList(Buyer buyer) {
-		
-		
+
+
 	}
 
 }
