@@ -14,7 +14,7 @@ public final class Reader {
 	}
 	
 	public static String readString() {
-		return reader.nextLine();
+		return reader.nextLine().trim();
 	}
 	
 	public static String readString(String prompt) {
