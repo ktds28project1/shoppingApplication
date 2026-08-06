@@ -19,13 +19,13 @@ public class SellerServiceImpl implements SellerService {
 		this.sellerList = new HashMap<>();
 		this.productList = new ArrayList<>();
 	}
-	
-	
-	//사업자 등록 
+
+
+	//사업자 등록
 	@Override
 	public void addSeller() {
 
-		
+
 
 		String name = Reader.validateInput("이름 : ");
 		String businessNumber = Reader.validateInput("사업자 등록번호 : ");
@@ -34,13 +34,13 @@ public class SellerServiceImpl implements SellerService {
 			System.out.println("중복된 사업자 등록번호입니다");
 			return;
 		}
-		
+
 		String representativeName = Reader.validateInput("대표자 명 : ");
 		String representativeNumber = Reader.validateInput("대표자 연락처 : ");
 		String sellerAddress = Reader.validateInput("사업장 주소 : : ");
 		String sellerPassWord = Reader.validateInput("판매자 비밀번호 : ");
 
-		
+
 
 		this.sellerList.put(businessNumber, new Seller(name, businessNumber, representativeName, representativeNumber,
 				sellerAddress, sellerPassWord));
@@ -72,10 +72,10 @@ public class SellerServiceImpl implements SellerService {
 				continue;
 			}
 
-			
+
 			System.out.println(sellerList.get(businessNumber).getName() + "님 환영합니다.");
 			return sellerList.get(businessNumber);
-			
+
 
 		}
 		return null;
@@ -127,7 +127,7 @@ public class SellerServiceImpl implements SellerService {
 		String description = Reader.validateInput("상품 설명 : ");
 
 		long productNum = ++productSeq;
-		Product product = new Product(productNum, seller.getId(), name, price, stock, description);
+		Product product = new Product(productNum, seller.getSid(), name, price, stock, description);
 
 		productList.add(product);
 
@@ -206,7 +206,7 @@ public class SellerServiceImpl implements SellerService {
 		boolean hasProduct = false;
 
 		for (Product product : productList) {
-			if (product.getSeller().equals(seller.getId()) && product.isActive()) {
+			if (product.getSeller().equals(seller.getSid()) && product.isActive()) {
 				System.out.printf("[%d] %s | 가격: %d원 | 재고: %d개 | 설명: %s\n",
 						product.getProductNumber(),
 						product.getName(),
@@ -225,7 +225,7 @@ public class SellerServiceImpl implements SellerService {
 	private Product findMyProduct(Seller seller, long productNumber) {
 		for (Product product : productList) {
 			if (product.getProductNumber() == productNumber) {
-				if (!product.getSeller().equals(seller.getId())) {
+				if (!product.getSeller().equals(seller.getSid())) {
 					System.out.println("해당 상품을 관리할 권한이 없습니다.");
 					return null;
 				}
@@ -262,12 +262,5 @@ public class SellerServiceImpl implements SellerService {
         seller.setAddress(address);           // 주소 (User)
         seller.setPassword(newPassword);      // 비밀번호 (User)
 	}
-
-
-  @Override
-  public void replyInquiry(int inquiryNumber) {
-    // TODO Auto-generated method stub
-    
-  }
 
 }
