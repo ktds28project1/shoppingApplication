@@ -33,6 +33,7 @@ public interface BuyerService {
 	// 상품 리뷰 등록
 	
 	// 상품 문의 등록
+	void addInquiry();
 	
 	// 거래 목록 조회
 	

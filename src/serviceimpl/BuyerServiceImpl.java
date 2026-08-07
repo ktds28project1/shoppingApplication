@@ -1,18 +1,28 @@
 package serviceimpl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
 import domain.Buyer;
+import domain.Inquiry;
+import domain.Product;
+import domain.User;
 import service.BuyerService;
 import util.Reader;
 
 public class BuyerServiceImpl implements BuyerService {
 	private Map<String, Buyer> buyerMap;
-
+	private static Map<Long, Inquiry> inquiryList;
+	private static Map<Long, Product> productList;
+	private static User user;
+	
 	public BuyerServiceImpl() {
 		this.buyerMap = new HashMap<>();
+		this.productList = new HashMap<>();
+		this.inquiryList = new HashMap<>();
+		
 	}
 
 	public boolean findUserId(String userId) {
@@ -39,6 +49,17 @@ public class BuyerServiceImpl implements BuyerService {
 			return true;
 		}
 		return false;
+	}
+	
+	public void notFoundProductNumber(long productNumber) {
+		
+		
+		if (this.productList.containsKey(productNumber)) {
+			return;
+		}
+
+		System.out.println("유효하지 않은 상품번호입니다.");
+		
 	}
 
 	@Override
@@ -88,6 +109,28 @@ public class BuyerServiceImpl implements BuyerService {
 	@Override
 	public void deleteBuyer(Buyer buyer) {
 		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void addInquiry() {
+
+		
+
+		long inquiryNumber = this.inquiryList.size() + 1;
+
+		long productNumber = (long) Reader.readInt("문의하실 상품번호 ");
+		
+		// 상품번호가 맞지않을 경우
+		notFoundProductNumber(productNumber);
+
+		String inquiryUserId = user.getUserId();
+		String title = Reader.readString("문의 제목 ");
+
+		String content = Reader.readString("문의 내용을 작성해주세요");
+
+		this.inquiryList.put(productNumber, new Inquiry(inquiryNumber, productNumber, inquiryUserId, title, content));
+		
 		
 	}
 
