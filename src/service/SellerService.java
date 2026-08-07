@@ -8,7 +8,7 @@ public interface SellerService {
 	void addSeller();
 	
 	// 판매자 로그인
-	Seller SellerLogin();
+	Seller sellerLogin();
     
 	// 판매자 상품관리
 
