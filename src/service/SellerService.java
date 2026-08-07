@@ -18,4 +18,5 @@ public interface SellerService {
 	// 문의 조회
 	
 	// 문의 답변
+	void replyInquiry(int inquiryNumber);
 }

@@ -10,13 +10,8 @@ import domain.Inquiry;
 import domain.Product;
 import domain.User;
 
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
-
-import domain.Buyer;
 import domain.Order;
-import domain.Product;
 import service.BuyerService;
 import util.Reader;
 
@@ -130,6 +125,31 @@ public class BuyerServiceImpl implements BuyerService {
 					 , () -> buyer.setActive(false));
 	}
 
+    @Override
+    public void searchProductByKeyword(List<Product> productList) {
+        final String keyword = Reader.readString("검색어를 입력하세요: "); 
+
+        List<Product> searchedProducts = new ArrayList<>();
+        productList.stream() // Stream<Product>
+                   .filter(product -> product.getName().contains(keyword)) // Stream<Product>
+                   .forEach(product -> searchedProducts.add(product)); // void
+      
+
+        printSearchedProduct(searchedProducts);
+    }
+    
+    private void printSearchedProduct(List<Product> productList) {
+      for (Product p : productList) {
+        // TODO 검색된 상품 리스트 출력 구현
+      }
+    }
+
+    @Override
+    public void printProductDetailByNumber(List<Product> productList) {
+      // TODO Auto-generated method stub
+      
+    }
+    
 	private void setBuyer(Buyer buyer, String err, Supplier<Boolean> check, Runnable action) {
 		if (!buyer.isActive()) {
 			throw new IllegalStateException(err);
