@@ -22,12 +22,12 @@ public class BuyerServiceImpl implements BuyerService {
 	private User user;
 	private List<Order> orderList;
 
-
 	public BuyerServiceImpl() {
 		this.buyerMap = new HashMap<>();
 		this.orderList = new ArrayList<>();
 		this.productList = new HashMap<>();
 		this.inquiryList = new HashMap<>();
+
 	}
 
 	public boolean findUserId(String userId) {
@@ -57,7 +57,6 @@ public class BuyerServiceImpl implements BuyerService {
 	}
 
 	public void notFoundProductNumber(long productNumber) {
-
 
 		if (this.productList.containsKey(productNumber)) {
 			return;
