@@ -263,4 +263,11 @@ public class SellerServiceImpl implements SellerService {
         seller.setPassword(newPassword);      // 비밀번호 (User)
 	}
 
+
+  @Override
+  public void replyInquiry(int inquiryNumber) {
+    // TODO Auto-generated method stub
+    
+  }
+
 }
