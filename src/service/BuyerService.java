@@ -48,7 +48,11 @@ public interface BuyerService {
 	
 	// 상품 문의 등록
 	void addInquiry();
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> 6888a90 (상품문의 등록)
 	// 거래 목록 조회
 	void printOrderList(Buyer buyer);
 
