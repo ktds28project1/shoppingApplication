@@ -4,10 +4,14 @@
 .project
 
 # vscode 세팅
-*/.vscode
+.vscode/
 
 # 프로젝트 세팅
-*/.settings
-*/bin
-*/lib
-/bin/
+.settings/
+bin/
+lib/
+
+.gitignore
+
+shoppingApplication.iml
+

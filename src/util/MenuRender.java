@@ -1,15 +1,14 @@
 package util;
 
 import common.Menu;
-import common.ShoppingData;
 
 public final class MenuRender {
 	
 	private MenuRender() {
 	}
 	
-	public static <T, E extends Enum<E> & Menu<T>> void render(String title, String cancel, E[] menus
-																, ShoppingData data, T target) {
+	public static <T, S, E extends Enum<E> & Menu<T,S>> void render(String title, String cancel, E[] menus
+																, S service, T target) {
 		int cancelMenu = menus.length + 1;
 		int answer = -1;
 		
@@ -26,7 +25,7 @@ public final class MenuRender {
 			if (answer == cancelMenu) {
 				break;
 			} else if (answer >= 1 && answer < cancelMenu) {
-				menus[answer-1].order(data, target);
+				menus[answer-1].order(service, target);
 			} else {
 				System.out.println("다시 입력하세요.");
 			}

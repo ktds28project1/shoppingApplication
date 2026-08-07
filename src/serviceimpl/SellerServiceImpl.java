@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import domain.Product;
 import domain.Seller;
 import service.SellerService;
@@ -34,13 +35,11 @@ public class SellerServiceImpl implements SellerService {
 			System.out.println("중복된 사업자 등록번호입니다");
 			return;
 		}
-
+		
 		String representativeName = Reader.validateInput("대표자 명 : ");
 		String representativeNumber = Reader.validateInput("대표자 연락처 : ");
 		String sellerAddress = Reader.validateInput("사업장 주소 : : ");
 		String sellerPassWord = Reader.validateInput("판매자 비밀번호 : ");
-
-
 
 		this.sellerList.put(businessNumber, new Seller(name, businessNumber, representativeName, representativeNumber,
 				sellerAddress, sellerPassWord));
@@ -71,7 +70,6 @@ public class SellerServiceImpl implements SellerService {
 				count++;
 				continue;
 			}
-
 
 			System.out.println(sellerList.get(businessNumber).getName() + "님 환영합니다.");
 			return sellerList.get(businessNumber);
@@ -262,5 +260,12 @@ public class SellerServiceImpl implements SellerService {
         seller.setAddress(address);           // 주소 (User)
         seller.setPassword(newPassword);      // 비밀번호 (User)
 	}
+
+
+  @Override
+  public void replyInquiry(int inquiryNumber) {
+    // TODO Auto-generated method stub
+    
+  }
 
 }
