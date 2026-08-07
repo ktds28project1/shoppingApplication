@@ -74,6 +74,7 @@ public class SellerServiceImpl implements SellerService {
 			System.out.println(sellerList.get(businessNumber).getName() + "님 환영합니다.");
 			return sellerList.get(businessNumber);
 
+
 		}
 		return null;
 	}
