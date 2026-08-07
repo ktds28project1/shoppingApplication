@@ -151,4 +151,9 @@ public class BuyerServiceImpl implements BuyerService {
 		
 	}
 
+	@Override
+	public void printOrderList(Buyer buyer) {
+		
+		
+	}
 }
