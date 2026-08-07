@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import domain.Inquiry;
-import domain.Product; // 나중에 product 리스트의 <>을 Product에 넣을 계획중 
-import domain.User;
+//import domain.Product; // 나중에 product 리스트의 <>을 Product에 넣을 계획중 
+//import domain.User; //나중에 user데이터 클래스 에서 userId가져오기 
 import util.Reader;
 
 public class ProductInquiry {
@@ -16,9 +16,9 @@ public class ProductInquiry {
 	private static List<Long> product;
 	
 	
-	public ProductInquiry() {
-		this.inquiryList = new HashMap<>();
-	}
+//	public ProductInquiry() {
+//		this.inquiryList = new HashMap<>();
+//	}
 	
 	public static void notFoundProductNumber(long productNumber) {
 		product = List.of(1234l,345l,35l,56l,76576l,878l,1234l);
