@@ -48,10 +48,10 @@ public interface BuyerService {
 	
 	// 상품 문의 등록
 	void addInquiry();
-	
+
 	// 거래 목록 조회
 	void printOrderList(Buyer buyer);
-	
+
 	// 문의 목록 조회
 	
 	// 문의 내용 조회
