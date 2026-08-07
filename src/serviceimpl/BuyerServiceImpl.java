@@ -164,5 +164,19 @@ public class BuyerServiceImpl implements BuyerService {
 
 	}
 
+	@Override
+	public void printInquiry(User user) {
+		String iquiriedUser = user.getUserId();
+		boolean found = false;
+		for(Inquiry inq : this.inquiryList.values()) {
+			if(inq.getBuyer().equals(iquiriedUser)) {
+				System.out.println(inq);
+				found = true;
+			}
+		}
+		if(!found) {
+			System.out.println("등록된 문의가 없습니다.");
+		}
+	}
 
 }
