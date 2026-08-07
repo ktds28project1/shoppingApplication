@@ -119,38 +119,6 @@ public class BuyerServiceImpl implements BuyerService {
 				() -> buyer.setActive(false));
 	}
 
-	@Override
-	public void searchProductByKeyword(List<Product> productList) {
-		final String keyword = Reader.readString("검색어를 입력하세요: ");
-
-        List<Product> searchedProducts = new ArrayList<>();
-        productList.stream() // Stream<Product>
-                   .filter(product -> product.getName().contains(keyword)) // Stream<Product>
-                   .forEach(product -> searchedProducts.add(product)); // void
-      
-
-        printSearchedProduct(searchedProducts);
-    }
-    
-    private void printSearchedProduct(List<Product> productList) {
-      for (Product p : productList) {
-        System.out.println("상품 번호: " + p.getProductNumber());
-        System.out.println("판매자 명: " + p.getSeller());
-        System.out.println("상품 명: " + p.getName());
-        System.out.println("상품 가격: " + p. getPrice());
-        System.out.println("상품 할인 가격: " + p.getPrice());
-        String stockString = p.getStock() <= 0 ? "품절" : p.getStock()+"";
-        System.out.println("상품 재고: " + stockString);
-        System.out.println("누적 구매 횟수: ");
-        System.out.println("별점 평균: ");
-      }
-    }
-
-	@Override
-	public void printProductDetailByNumber(List<Product> productList) {
-		// TODO Auto-generated method stub
-
-	}
 
 	private void setBuyer(Buyer buyer, String err, Supplier<Boolean> check, Runnable action) {
 		if (!buyer.isActive()) {
