@@ -174,11 +174,11 @@ public class ProductServiceImpl implements ProductService {
 
     
     @Override
-    public void searchProductByKeyword(List<Product> productList) {
+    public void searchProductByKeyword() {
         final String keyword = Reader.readString("검색어를 입력하세요: ");
 
         List<Product> searchedProducts = new ArrayList<>();
-        productList.stream() // Stream<Product>
+        this.productList.stream() // Stream<Product>
                    .filter(product -> product.getName().contains(keyword)) // Stream<Product>
                    .forEach(product -> searchedProducts.add(product)); // void
       
@@ -201,7 +201,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void printProductDetailByNumber(List<Product> productList) {
+    public void printProductDetailByNumber() {
         // TODO Auto-generated method stub
 
     }
