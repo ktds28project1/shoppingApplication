@@ -17,7 +17,6 @@ import util.Reader;
 
 public class BuyerServiceImpl implements BuyerService {
 	private Map<String, Buyer> buyerMap;
-
 	private Map<Long, Inquiry> inquiryList;
 	private Map<Long, Product> productList;
 	private User user;
@@ -28,8 +27,6 @@ public class BuyerServiceImpl implements BuyerService {
 		this.orderList = new ArrayList<>();
 		this.productList = new HashMap<>();
 		this.inquiryList = new HashMap<>();
-
-
 	}
 
 	public boolean findUserId(String userId) {
