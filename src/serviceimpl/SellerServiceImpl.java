@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
-
 import domain.Product;
 import domain.Seller;
 import service.SellerService;
@@ -267,5 +265,12 @@ public class SellerServiceImpl implements SellerService {
         seller.setAddress(address);           // 주소 (User)
         seller.setPassword(newPassword);      // 비밀번호 (User)
 	}
+
+
+  @Override
+  public void replyInquiry(int inquiryNumber) {
+    // TODO Auto-generated method stub
+    
+  }
 
 }
