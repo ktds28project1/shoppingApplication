@@ -4,10 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 import java.util.function.Supplier;
-
 import domain.Buyer;
 import domain.Order;
 import domain.Product;
@@ -116,15 +113,21 @@ public class BuyerServiceImpl implements BuyerService {
                    .forEach(product -> searchedProducts.add(product)); // void
       
 
-        for (Product p : searchedProducts) {
-            printSearchedProduct(p);
-        }
+        printSearchedProduct(searchedProducts);
     }
     
-    private void printSearchedProduct(Product product) {
-      
+    private void printSearchedProduct(List<Product> productList) {
+      for (Product p : productList) {
+        // TODO 검색된 상품 리스트 출력 구현
+      }
     }
 
+    @Override
+    public void printProductDetailByNumber(List<Product> productList) {
+      // TODO Auto-generated method stub
+      
+    }
+    
 	private void setBuyer(Buyer buyer, String err, Supplier<Boolean> check, Runnable action) {
 		if (!buyer.isActive()) {
 			throw new IllegalStateException(err);
@@ -147,4 +150,5 @@ public class BuyerServiceImpl implements BuyerService {
 		
 		
 	}
+
 }
