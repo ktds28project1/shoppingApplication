@@ -195,15 +195,22 @@ public class ProductServiceImpl implements ProductService {
         System.out.println("상품 할인 가격: " + p.getPrice());
         String stockString = p.getStock() <= 0 ? "품절" : p.getStock()+"";
         System.out.println("상품 재고: " + stockString);
-        System.out.println("누적 구매 횟수: ");
+        System.out.println("누적 구매 횟수: " + p.getBuyCount());
         System.out.println("별점 평균: ");
       }
     }
 
     @Override
     public void printProductDetailByNumber() {
-        // TODO Auto-generated method stub
-
+      long productNumber = 1000l;
+      Product product = null;
+      while (true) {
+        productNumber = Reader.readInt("상세 조회할 상품 번호를 입력하세요: ");
+        product = this.productList.stream() // Stream<Product>
+            .filter(p -> p.getProductNumber() == productNumber)
+            .findFirst()
+            .orElse(null);
+      }
     }
 
 }
