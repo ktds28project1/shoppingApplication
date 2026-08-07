@@ -154,11 +154,10 @@ public class BuyerServiceImpl implements BuyerService {
 		if (!buyer.isActive()) {
 			throw new IllegalStateException(err);
 		}
-
 		if (!check.get()) {
 			System.out.println("아이디가 틀렸습니다.");
 		}
-
+		
 		String password = Reader.readString("비밀번호를 입력해주세요: ");
 		if (buyer.getPassword().equals(password)) {
 			action.run();
