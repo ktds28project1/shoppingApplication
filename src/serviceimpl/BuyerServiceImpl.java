@@ -23,9 +23,9 @@ import util.Reader;
 public class BuyerServiceImpl implements BuyerService {
 	private Map<String, Buyer> buyerMap;
 
-	private static Map<Long, Inquiry> inquiryList;
-	private static Map<Long, Product> productList;
-	private static User user;
+	private Map<Long, Inquiry> inquiryList;
+	private Map<Long, Product> productList;
+	private User user;
 	private List<Order> orderList;
 	
 	public BuyerServiceImpl() {
@@ -165,7 +165,7 @@ public class BuyerServiceImpl implements BuyerService {
 		// 상품번호가 맞지않을 경우
 		notFoundProductNumber(productNumber);
 
-		String inquiryUserId = user.getUserId();
+		String inquiryUserId = this.user.getUserId();
 		String title = Reader.readString("문의 제목 ");
 
 		String content = Reader.readString("문의 내용을 작성해주세요");
