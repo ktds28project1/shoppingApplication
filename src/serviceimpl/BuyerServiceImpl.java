@@ -111,7 +111,7 @@ public class BuyerServiceImpl implements BuyerService {
 
 	@Override
 	public void modifyBuyer(Buyer buyer) {
-		this.setBuyer(buyer, "탈퇴한 사용자 수정 발생", () -> true,  () -> {
+		this.setBuyer(buyer, "탈퇴한 사용자 수정 발생", () -> true, () -> {
 			// FIXME 입력 유효성 검사 유무 확인 필요
 			buyer.setName(Reader.readString("변경할 이름: "));
 			buyer.setPassword(Reader.readString("변경할 비밀번호: "));
@@ -155,8 +155,6 @@ public class BuyerServiceImpl implements BuyerService {
 		if (!buyer.isActive()) {
 			throw new IllegalStateException(err);
 		}
-
-
 
 		if (!check.get()) {
 			System.out.println("아이디가 틀렸습니다.");
