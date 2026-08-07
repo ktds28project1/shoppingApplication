@@ -76,4 +76,10 @@ public class Inquiry {
 	public LocalDateTime getInquiryDate() {
 		return this.inquiryDate;
 	}
+	@Override
+	public String toString() {
+		return "문의 번호: " + this.getInquiryNumber() + "\n문의 제목: " + this.getTitle() + "\n문의자 이름: " 
+							+ this.getBuyer() + "\n문의 등록 날짜: " + this.getInquiryDate() + "\n문의 내용" + this.getContent()
+							+ "\n답변 내용: " + this.getAnswer(); 
+	}
 }
