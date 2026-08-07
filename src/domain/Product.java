@@ -26,6 +26,9 @@ public class Product {
 	/** 판매 중단 여부 */
 	private boolean active;
 	
+	/** 누적 구매 횟수 */
+	private int buyCount;
+	
 	public Product(long productNumber, String seller, String name, int price, int stock, String description) {
 		this.productNumber = productNumber;
 		this.seller = seller;
@@ -83,4 +86,14 @@ public class Product {
 	public String getSeller() {
 		return this.seller;
 	}
+
+  public int getBuyCount() {
+    return this.buyCount;
+  }
+
+  public void setBuyCount(int buyCount) {
+    this.buyCount = buyCount;
+  }
+	
+	
 }
