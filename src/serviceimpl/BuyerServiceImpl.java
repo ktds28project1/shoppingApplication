@@ -17,6 +17,7 @@ import util.Reader;
 
 public class BuyerServiceImpl implements BuyerService {
 	private Map<String, Buyer> buyerMap;
+
 	private Map<Long, Inquiry> inquiryList;
 	private Map<Long, Product> productList;
 	private User user;
@@ -27,6 +28,7 @@ public class BuyerServiceImpl implements BuyerService {
 		this.orderList = new ArrayList<>();
 		this.productList = new HashMap<>();
 		this.inquiryList = new HashMap<>();
+
 
 	}
 
@@ -57,6 +59,7 @@ public class BuyerServiceImpl implements BuyerService {
 	}
 
 	public void notFoundProductNumber(long productNumber) {
+
 
 		if (this.productList.containsKey(productNumber)) {
 			return;
@@ -106,7 +109,7 @@ public class BuyerServiceImpl implements BuyerService {
 
 	@Override
 	public void modifyBuyer(Buyer buyer) {
-		this.setBuyer(buyer, "탈퇴한 사용자 수정 발생", () -> true, () -> {
+		this.setBuyer(buyer, "탈퇴한 사용자 수정 발생", () -> true,  () -> {
 			// FIXME 입력 유효성 검사 유무 확인 필요
 			buyer.setName(Reader.readString("변경할 이름: "));
 			buyer.setPassword(Reader.readString("변경할 비밀번호: "));
@@ -117,8 +120,9 @@ public class BuyerServiceImpl implements BuyerService {
 
 	@Override
 	public void deleteBuyer(Buyer buyer) {
-		this.setBuyer(buyer, "탈퇴한 사용자 재탈퇴 시도 발생", () -> buyer.getUserId() == Reader.readString("아이디를 입력하세요: "),
-				() -> buyer.setActive(false));
+		this.setBuyer(buyer, "탈퇴한 사용자 재탈퇴 시도 발생"
+					 , () -> buyer.getUserId() == Reader.readString("아이디를 입력하세요: ")
+					 , () -> buyer.setActive(false));
 	}
 
     @Override
@@ -165,6 +169,7 @@ public class BuyerServiceImpl implements BuyerService {
 
 	@Override
 	public void buyProduct(Buyer buyer, Map<Long, Product> productMap) {
+
 
 	}
 
