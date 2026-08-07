@@ -11,3 +11,8 @@
 */bin
 */lib
 /bin/
+
+.gitignore
+
+shoppingApplication.iml
+
