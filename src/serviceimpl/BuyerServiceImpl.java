@@ -5,6 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+
+
 import domain.Buyer;
 import domain.Inquiry;
 import domain.Product;
@@ -106,7 +111,7 @@ public class BuyerServiceImpl implements BuyerService {
 
 	@Override
 	public void modifyBuyer(Buyer buyer) {
-		this.setBuyer(buyer, "탈퇴한 사용자 수정 발생", () -> true, () -> {
+		this.setBuyer(buyer, "탈퇴한 사용자 수정 발생", () -> true,  () -> {
 			// FIXME 입력 유효성 검사 유무 확인 필요
 			buyer.setName(Reader.readString("변경할 이름: "));
 			buyer.setPassword(Reader.readString("변경할 비밀번호: "));
