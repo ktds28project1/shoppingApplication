@@ -1,6 +1,6 @@
 package common;
 
-import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import domain.Buyer;
@@ -18,9 +18,9 @@ import domain.Seller;
  * 리뷰 목록
  * 문의 목록
  */
-public record ShoppingData(List<Buyer> buyerList, List<Seller> sellerList
-							, List<Product> productList, List<Order> orderList
-							, List<Review> reviewList, List<Inquiry> inquiryList) {
+public record ShoppingData(Map<String, Buyer> buyerList, Map<String, Seller> sellerList
+							, Map<Long, Product> productList, Map<Long, Order> orderList
+							, Map<Long, Review> reviewList, Map<Long, Inquiry> inquiryList) {
 	public ShoppingData{
 		Objects.requireNonNull(buyerList);
 		Objects.requireNonNull(sellerList);
