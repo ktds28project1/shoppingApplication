@@ -5,12 +5,12 @@ package domain;
  * 판매자
  */
 public class Seller extends User{
-	
-		
+
 	/** 대표자명 */
 	private String ownerName;
 	
-	
+	/** 판매자 고유 sid */
+	private String sellerSid;
 	
 	/** 매출 */
 	private long sales;
@@ -39,7 +39,7 @@ public class Seller extends User{
 	}
 
 
-	public String getId() {
-		
-	}
+	public String getSid() {
+        return sellerSid;
+    }
 }
