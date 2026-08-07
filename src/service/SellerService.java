@@ -13,7 +13,7 @@ public interface SellerService {
 	void modifySeller(Seller seller);
 
 	// 문의 조회
-	
+	void printInquiry(Seller seller);
 	// 문의 답변
 	void replyInquiry(int inquiryNumber);
 }

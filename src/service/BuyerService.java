@@ -1,9 +1,10 @@
 package service;
 
 import java.util.Map;
+
 import domain.Buyer;
 import domain.Product;
-import domain.Seller;
+import domain.User;
 
 public interface BuyerService {
 
@@ -42,4 +43,5 @@ public interface BuyerService {
 	// 문의 목록 조회
 	
 	// 문의 내용 조회
+	void printInquiry(Buyer Buyer);
 }
