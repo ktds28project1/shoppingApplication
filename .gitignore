@@ -12,19 +12,7 @@
 */lib
 /bin/
 
-<<<<<<< HEAD
-
 .gitignore
 
 shoppingApplication.iml
 
-
-=======
-<<<<<<< HEAD
-.gitignore
-
-shoppingApplication.iml
-=======
-.gitignore
->>>>>>> b2f6115 (0807 commit)
->>>>>>> 48fc0841f231498a2795f4949a9cfccb4838cc55
