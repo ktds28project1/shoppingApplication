@@ -9,6 +9,7 @@ import domain.Buyer;
 import domain.Inquiry;
 import domain.Order;
 import domain.Product;
+import domain.Seller;
 import domain.User;
 import service.BuyerService;
 import util.Reader;
@@ -137,7 +138,117 @@ public class BuyerServiceImpl implements BuyerService {
 	}
 
 	@Override
-	public void buyProduct(Buyer buyer, Map<Long, Product> productMap) {
+	public void buyProduct(Buyer buyer, Map<Long, Product> productMap, Map<String, Seller> sellerMap) {
+		//회원 정보 확인
+		if (buyer == null || !buyer.isActive()) {
+			System.out.println("회원정보가 확인되지 않습니다. 다시 로그인 해주세요.");
+			return;
+		}
+		
+		//상점 상품 등록 여부 확인
+		if (productMap == null || productMap.isEmpty()) {
+			System.out.println("등록된 상품이 없습니다.");
+			return;
+		}
+		
+		// 상품 번호 확인
+		System.out.println("\n 상품 구매");
+		long productNum = Reader.readInt("구매하실 상품 번호를 입력해주세요: ");
+		
+		if(!productMap.containsKey(productNum)) {
+			System.out.println("유효하지 않은 상품번호입니다.");
+			return;
+		}
+		
+		// 상품 구매 가능 여부 확인
+		Product product = productMap.get(productNum);
+	    if (product == null) {
+	    	System.out.println("상품 정보가 존재하지 않습니다.");
+	    }
+	    if (!product.isActive()) {
+	        System.out.println("현재 구매할 수 없는 상품입니다.");
+	        return; 
+	    }
+		
+	    // 상품 재고 확인
+	    int quantity = Reader.readInt("구매 수량을 입력해주세요.");
+	    if (quantity <= 0) {
+	    	System.out.println("구매 수량은 1개 이상이어야 합니다.");
+	    	return;
+	    }
+	    
+	    if (product.getStock() < quantity) {
+	    	System.out.println("재고가 부족합니다. (현재 재고: " + product.getStock() + "개)" );
+	    	return;
+	    }
+	    
+	    // 배송 정보 입력
+	    System.out.println("\n 배송 정보를 입력해주세요");
+	    String address = Reader.validateInput("배송지 주소: ");
+	    String recipientName = Reader.validateInput("수령자 이름: ");
+	    String recipientPhone = Reader.validateInput("수령자 연락처: ");
+	        
+	    // 상품 결제 금액 확인
+	    long totalPrice = (long) product.getPrice() * quantity;	    
+	    System.out.println("총 상품 금액: " + totalPrice + "원");
+	    
+	    // 포인트 사용 여부 및 최종금액 계산
+	    long usePoint = 0;
+	    if (buyer.getPoint() >= 1000) {
+	    	System.out.println("보유 포인트: " + buyer.getPoint() + "점");
+	    	String answer = Reader.validateInput("포인트를 사용하시겠습니까? (Y/N) : ");
+	    	if (answer.equalsIgnoreCase("Y")) {
+	    		usePoint = Math.min(buyer.getPoint(), totalPrice);
+	    		System.out.println(usePoint + "포인트가 전액 적용되었습니다.");
+	    	} else {
+	    		System.out.println("포인트를 사용하지 않습니다.");	
+	    	}
+	    } else {
+	    		System.out.println("보유 포인트 이상의 포인트를 사용할 수 없습니다.");
+	    }
+	    
+	    long finalPrice = totalPrice - usePoint;
+	    System.out.println("최종 결제 금액: " + finalPrice + "원");
+	    
+	    // 결제 계좌번호 입력 및 잔액 확인
+	    String account = Reader.validateInput("결제 계좌번호: ");
+	    
+	    if (buyer.getMoney() < finalPrice) {
+	    	System.out.println("계좌 잔액이 부족합니다. (현재 잔액: " + buyer.getMoney() + "원");
+	    	return;
+	    }
+	    
+	    // 데이터 업데이트
+	    buyer.setMoney(buyer.getMoney() - finalPrice);
+	    buyer.setPoint(buyer.getPoint() - usePoint);
+	    
+	    product.setStock(product.getStock() - quantity);
+	    product.setBuyCount(product.getBuyCount() + quantity);
+	    
+	    // 매출액 반영
+	    if (sellerMap != null && sellerMap.containsKey(product.getSeller())) {
+	        Seller seller = sellerMap.get(product.getSeller());
+	        if (seller != null) {
+	            seller.setSales(seller.getSales() + finalPrice);
+	        }
+	    }
+	    
+	    long newOrderNumber = this.orderList.size() + 1;
+	    Order order = new Order(
+	        newOrderNumber,
+	        buyer.getUserId(),
+	        product.getProductNumber(),
+	        quantity,
+	        (int) usePoint,
+	        (int) finalPrice,
+	        address,
+	        recipientName,
+	        recipientPhone,
+	        account
+	    );
+	    this.orderList.add(order);
+	    
+	    
 
 	}
 
