@@ -29,7 +29,7 @@ public interface BuyerService {
 	
 
 	// 상품 구매
-	void buyProduct(Buyer buyer, Map<Long, Product> productMap, Map<String, Seller> sellerMap);
+	void buyProduct(Buyer buyer, Map<Long, Product> productMap);
 	
 	// 상품 리뷰 등록
 	
