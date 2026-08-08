@@ -64,4 +64,17 @@ public final class Reader {
 			}
 		}
 	}
+	
+	public static String readPhoneNumber(String prompt) {
+		String phoneNumber = null;
+		while(true) {
+			phoneNumber = readString(prompt);
+			if(phoneNumber.matches("^01\\d{1}-?\\d{3,4}-?\\d{4}$")) {
+				return phoneNumber;
+			}
+			System.out.println("전화번호 형식에 맞지않습니다.");
+			System.out.println("000-0000-0000");
+			continue;
+		}
+	}
 }
