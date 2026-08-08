@@ -3,6 +3,7 @@ package service;
 import java.util.Map;
 import domain.Buyer;
 import domain.Product;
+import domain.Seller;
 
 public interface BuyerService {
 
@@ -28,7 +29,7 @@ public interface BuyerService {
 	
 
 	// 상품 구매
-	void buyProduct(Buyer buyer, Map<Long, Product> productMap);
+	void buyProduct(Buyer buyer, Map<Long, Product> productMap, Map<String, Seller> sellerMap);
 	
 	// 상품 리뷰 등록
 	
