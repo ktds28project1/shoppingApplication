@@ -79,8 +79,15 @@ public class SellerServiceImpl implements SellerService {
 	//판매자 수정
 	@Override
 	public void modifySeller(Seller seller) {
-		System.out.println(" 판매자 정보 수정 ");
+		
 
+		if (seller == null) {
+		    System.out.println("로그인이 필요한 기능입니다.");
+		    return;
+		}
+		
+		System.out.println("\n 판매자 정보 수정 ");
+		
 		String password = Reader.readString("비밀번호를 입력하세요: ");
 		if (!seller.getPassword().equals(password)) {
 			System.out.println("잘못된 비밀번호 입니다.");
@@ -88,11 +95,11 @@ public class SellerServiceImpl implements SellerService {
 		}
 
 		// 수정할 정보 입력
-		String companyName = Reader.validateInput("변경할 상호명");
-        String ownerName = Reader.validateInput("변경할 대표자명");
-        String ownerPhone = Reader.validateInput("변경할 대표자 연락처");
-        String address = Reader.validateInput("변경할 사업장 주소");
-        String newPassword = Reader.validateInput("변경할 비밀번호");
+		String companyName = Reader.validateInput("변경할 상호명: ");
+        String ownerName = Reader.validateInput("변경할 대표자명: ");
+        String ownerPhone = Reader.validateInput("변경할 대표자 연락처: ");
+        String address = Reader.validateInput("변경할 사업장 주소: ");
+        String newPassword = Reader.validateInput("변경할 비밀번호: ");
 
 
         seller.setName(companyName);          // 상호명 (User)
@@ -100,6 +107,8 @@ public class SellerServiceImpl implements SellerService {
         seller.setPhoneNumber(ownerPhone);    // 연락처 (User)
         seller.setAddress(address);           // 주소 (User)
         seller.setPassword(newPassword);      // 비밀번호 (User)
+        
+        System.out.println("정보 수정이 완료되었습니다.");
 	}
 
 

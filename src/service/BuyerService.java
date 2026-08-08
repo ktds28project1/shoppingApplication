@@ -3,6 +3,7 @@ package service;
 import java.util.Map;
 import domain.Buyer;
 import domain.Product;
+import domain.Seller;
 
 public interface BuyerService {
 
