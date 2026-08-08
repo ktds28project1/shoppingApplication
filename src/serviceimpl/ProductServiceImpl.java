@@ -183,34 +183,57 @@ public class ProductServiceImpl implements ProductService {
                    .forEach(product -> searchedProducts.add(product)); // void
       
 
-        printSearchedProduct(searchedProducts);
+        printSearchedProducts(searchedProducts);
     }
     
-    private void printSearchedProduct(List<Product> productList) {
+    private void printSearchedProducts(List<Product> productList) {
       for (Product p : productList) {
         System.out.println("상품 번호: " + p.getProductNumber());
-        System.out.println("판매자 명: " + p.getSeller());
+        System.out.println("판매자 명: " + p.getSeller());	// FIXME 판매자 명 출력하도록 수정 필요
         System.out.println("상품 명: " + p.getName());
         System.out.println("상품 가격: " + p. getPrice());
-        System.out.println("상품 할인 가격: " + p.getPrice());
+        System.out.println("상품 할인 가격: " + p.getPrice());	// FIXME 할인 가격 따로 출력하도록 수정 필요
         String stockString = p.getStock() <= 0 ? "품절" : p.getStock()+"";
         System.out.println("상품 재고: " + stockString);
         System.out.println("누적 구매 횟수: " + p.getBuyCount());
-        System.out.println("별점 평균: ");
+        System.out.println("별점 평균: ");	// FIXME 별점 평균 출력하도록 수정 
       }
     }
 
     @Override
     public void printProductDetailByNumber() {
-      long productNumber = 1000l;
-      Product product = null;
-      while (true) {
-        productNumber = Reader.readInt("상세 조회할 상품 번호를 입력하세요: ");
-        product = this.productList.stream() // Stream<Product>
-            .filter(p -> p.getProductNumber() == productNumber)
-            .findFirst()
-            .orElse(null);
-      }
+      Product product = getProductByNumber();
+      printProductDetail(product);
     }
+    
+    private Product getProductByNumber() {
+        long productNumber = 0;
+        while (true) {
+        	productNumber = Reader.readInt("상세 조회할 상품 번호를 입력하세요: ");
+        	for (Product p : this.productList) {
+        		if (p.getProductNumber() == productNumber) {
+        			return p;
+    			}
+    		}
+    		System.out.println("해당 번호의 상품이 존재하지 않습니다. 다시 입력해주세요.");
+    	}
+    }
+    
+    private void printProductDetail(Product product) {
+        System.out.println("상품 번호: " + product.getProductNumber());
+        System.out.println("상품 명: " + product.getName());
+        System.out.println("판매자 명: " + product.getSeller());	// FIXME 판매자 명 출력하도록 수정 필요
+        System.out.println("사업자 등록 번호: ");	// FIXME 사업자 등록 번호 출력하도록 수정 필요
+        System.out.println("주소: " );	// FIXME 판매자 사업장 주소지 출력하도록 수정 필요
+        System.out.println("연락처: " );	// FIXME 판매자 연락처 출력하도록 수정 필요
+        System.out.println("누적 구매 횟수: " + product.getBuyCount());
+        System.out.println("리뷰 수: " );	// FIXME 리뷰수 출력 필요
+        System.out.println("별점 평균: ");	// FIXME 별점 평균 출력
+        System.out.println("문의 수: ");	// FIXME 문의 수 출력
+        System.out.println("상품 상세 정보: " + product.getDescription());
+        System.out.println("리뷰 목록: ");	// FIXME 리뷰 목록 출력
+        System.out.println("문의 목록: ");	// FIXME 문의 목록 출력
+	}
+    
 
 }
