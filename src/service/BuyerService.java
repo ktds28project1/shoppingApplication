@@ -4,6 +4,7 @@ import java.util.Map;
 
 import domain.Buyer;
 import domain.Product;
+import domain.Seller;
 import domain.User;
 
 public interface BuyerService {

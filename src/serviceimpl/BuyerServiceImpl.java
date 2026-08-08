@@ -23,7 +23,7 @@ public class BuyerServiceImpl implements BuyerService {
 	private Map<Long, Product> productList;
 	private User user;
 	private List<Order> orderList;
-		
+	
 	public BuyerServiceImpl(ShoppingData shoppingData) {
 		this.buyerMap = shoppingData.buyerList();
 		this.sellerMap = new HashMap<>();
