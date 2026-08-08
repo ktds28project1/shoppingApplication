@@ -250,6 +250,7 @@ public class BuyerServiceImpl implements BuyerService {
 	    );
 	    this.orderList.add(order);
 	    
+	    System.out.println("상품 구매 완료");
 	    
 
 	}
