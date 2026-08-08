@@ -16,6 +16,7 @@ import util.Reader;
 
 public class BuyerServiceImpl implements BuyerService {
 	private Map<String, Buyer> buyerMap;
+	private Map<String, Seller> sellerMap;
 	private Map<Long, Inquiry> inquiryList;
 	private Map<Long, Product> productList;
 	private User user;
@@ -23,6 +24,7 @@ public class BuyerServiceImpl implements BuyerService {
 	
 	public BuyerServiceImpl() {
 		this.buyerMap = new HashMap<>();
+		this.sellerMap = new HashMap<>();
 		this.orderList = new ArrayList<>();
 		this.productList = new HashMap<>();
 		this.inquiryList = new HashMap<>();
@@ -138,7 +140,7 @@ public class BuyerServiceImpl implements BuyerService {
 	}
 
 	@Override
-	public void buyProduct(Buyer buyer, Map<Long, Product> productMap, Map<String, Seller> sellerMap) {
+	public void buyProduct(Buyer buyer, Map<Long, Product> productMap) {
 		//회원 정보 확인
 		if (buyer == null || !buyer.isActive()) {
 			System.out.println("회원정보가 확인되지 않습니다. 다시 로그인 해주세요.");
