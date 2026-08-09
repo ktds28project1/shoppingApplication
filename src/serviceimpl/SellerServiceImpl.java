@@ -25,7 +25,7 @@ public class SellerServiceImpl implements SellerService {
 	@Override
 	public void addSeller() {
 
-
+		
 
 		String name = Reader.validateInput("이름 : ");
 		String businessNumber = Reader.validateInput("사업자 등록번호 : ");
@@ -40,10 +40,11 @@ public class SellerServiceImpl implements SellerService {
 		String sellerAddress = Reader.validateInput("사업장 주소 : : ");
 		String sellerPassWord = Reader.validateInput("판매자 비밀번호 : ");
 
-
-
+		String sellerSid = (Math.random()*1000)+"";
+		
+		
 		this.sellerList.put(businessNumber, new Seller(name, businessNumber, representativeName, representativeNumber,
-				sellerAddress, sellerPassWord));
+				sellerAddress, sellerPassWord,sellerSid));
 
 	}
 	
@@ -261,6 +262,13 @@ public class SellerServiceImpl implements SellerService {
         seller.setPhoneNumber(ownerPhone);    // 연락처 (User)
         seller.setAddress(address);           // 주소 (User)
         seller.setPassword(newPassword);      // 비밀번호 (User)
+	}
+
+
+	@Override
+	public void replyInquiry(int inquiryNumber) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

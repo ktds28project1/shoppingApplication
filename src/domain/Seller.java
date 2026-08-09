@@ -15,10 +15,10 @@ public class Seller extends User{
 	/** 매출 */
 	private long sales;
 	
-	public Seller(String companyName, String businessNumber, String ownerName, String ownerPhone, String address, String password) {
+	public Seller(String companyName, String businessNumber, String ownerName, String ownerPhone, String address, String password,String sellerSid) {
 		super(businessNumber, companyName, password, address, ownerPhone);
 		this.ownerName = ownerName;
-		
+		this.sellerSid = sellerSid;
 	}
 
 	public String getOwnerName() {
@@ -42,4 +42,12 @@ public class Seller extends User{
 	public String getSid() {
         return sellerSid;
     }
+
+	public String getSellerSid() {
+		return sellerSid;
+	}
+
+	
+	
+	
 }

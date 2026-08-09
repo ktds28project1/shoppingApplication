@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import domain.Buyer;
 import domain.Product;
+import domain.User;
 
 public interface BuyerService {
 
@@ -47,7 +48,7 @@ public interface BuyerService {
 	// 상품 리뷰 등록
 	
 	// 상품 문의 등록
-	void addInquiry();
+	void addInquiry(User user);
 
 	// 거래 목록 조회
 	void printOrderList(Buyer buyer);

@@ -20,7 +20,7 @@ public class BuyerServiceImpl implements BuyerService {
 
 	private Map<Long, Inquiry> inquiryList;
 	private Map<Long, Product> productList;
-	private User user;
+	
 	private List<Order> orderList;
 
 	public BuyerServiceImpl() {
@@ -58,15 +58,24 @@ public class BuyerServiceImpl implements BuyerService {
 		return false;
 	}
 
-	public void notFoundProductNumber(long productNumber) {
+	public boolean notFoundProductNumber(long productNumber) {
 
 
 		if (this.productList.containsKey(productNumber)) {
-			return;
+			return true;
 		}
 
 		System.out.println("유효하지 않은 상품번호입니다.");
-
+		return false;
+	}
+	
+	//문의 번호 생성 메소드 
+	public long inquiryNumber(int number) {
+		number += 1;
+		if (this.inquiryList.containsKey(number)) {
+			return number +=1;
+		}
+		return number;
 	}
 
 	@Override
@@ -174,23 +183,23 @@ public class BuyerServiceImpl implements BuyerService {
 	}
 
 	@Override
-	public void addInquiry() {
+	public void addInquiry(User user) {
 
 
-
-		long inquiryNumber = this.inquiryList.size() + 1;
-
+		long inquiryNumber = inquiryNumber(this.inquiryList.size());
 		long productNumber = (long) Reader.readInt("문의하실 상품번호 ");
-
+		
 		// 상품번호가 맞지않을 경우
-		notFoundProductNumber(productNumber);
-
-		String inquiryUserId = this.user.getUserId();
+		if(!notFoundProductNumber(productNumber)) {
+			return;
+		}
+		
+		String inquiryUserId = user.getUserId();
 		String title = Reader.readString("문의 제목 ");
 
 		String content = Reader.readString("문의 내용을 작성해주세요");
 
-		this.inquiryList.put(productNumber, new Inquiry(inquiryNumber, productNumber, inquiryUserId, title, content));
+		this.inquiryList.put(inquiryNumber, new Inquiry(inquiryNumber, productNumber, inquiryUserId, title, content));
 
 
 	}
