@@ -32,14 +32,17 @@ public class SellerServiceImpl implements SellerService {
 			System.out.println("중복된 사업자 등록번호입니다");
 			return;
 		}
-		
+
 		String representativeName = Reader.validateInput("대표자 명 : ");
 		String representativeNumber = Reader.validateInput("대표자 연락처 : ");
 		String sellerAddress = Reader.validateInput("사업장 주소 : : ");
 		String sellerPassWord = Reader.validateInput("판매자 비밀번호 : ");
 
+		String sellerSid = (Math.random()*1000)+"";
+
+
 		this.sellerList.put(businessNumber, new Seller(name, businessNumber, representativeName, representativeNumber,
-				sellerAddress, sellerPassWord));
+				sellerAddress, sellerPassWord,sellerSid));
 
 	}
 	
