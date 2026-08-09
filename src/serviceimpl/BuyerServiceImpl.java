@@ -351,7 +351,7 @@ public class BuyerServiceImpl implements BuyerService {
 	//문의 번호 생성 메소드
 	public long inquiryNumber(int number) {
 		number += 1;
-		if (this.inquiryList.containsKey(number)) {
+		if (this.inquiryList.containsKey((long)number)) {
 
 			return number +=1;
 		}
