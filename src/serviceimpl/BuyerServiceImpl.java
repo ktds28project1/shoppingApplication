@@ -64,12 +64,14 @@ public class BuyerServiceImpl implements BuyerService {
 		}
 
 		System.out.println("유효하지 않은 상품번호입니다.");
+
 		return false;
 	}
 	//문의 번호 생성 메소드
 	public long inquiryNumber(int number) {
 		number += 1;
 		if (this.inquiryList.containsKey(number)) {
+
 			return number +=1;
 		}
 		return number;
@@ -272,9 +274,11 @@ public class BuyerServiceImpl implements BuyerService {
 
 		// 상품번호가 맞지않을 경우
 		if(!notFoundProductNumber(productNumber)) {
+
 			return;
 		}
 		String inquiryUserId = this.user.getUserId();
+
 		String title = Reader.readString("문의 제목 ");
 
 		String content = Reader.readString("문의 내용을 작성해주세요");

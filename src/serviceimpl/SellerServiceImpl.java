@@ -38,11 +38,11 @@ public class SellerServiceImpl implements SellerService {
 		String sellerAddress = Reader.validateInput("사업장 주소 : : ");
 		String sellerPassWord = Reader.validateInput("판매자 비밀번호 : ");
 
-		String sellerSid = (Math.random()*1000)+"";
+		String sellerSid = (Math.random()*1000) + "";
 
 
 		this.sellerList.put(businessNumber, new Seller(name, businessNumber, representativeName, representativeNumber,
-				sellerAddress, sellerPassWord,sellerSid));
+				sellerAddress, sellerPassWord, sellerSid));
 
 	}
 	

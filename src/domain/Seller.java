@@ -15,7 +15,8 @@ public class Seller extends User{
 	/** 매출 */
 	private long sales;
 
-	public Seller(String companyName, String businessNumber, String ownerName, String ownerPhone, String address, String password,String sellerSid) {
+	public Seller(String companyName, String businessNumber, String ownerName, String ownerPhone
+			      ,String address, String password,String sellerSid) {
 		super(businessNumber, companyName, password, address, ownerPhone);
 		this.ownerName = ownerName;
 		this.sellerSid = sellerSid;
