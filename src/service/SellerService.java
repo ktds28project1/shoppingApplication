@@ -15,8 +15,6 @@ public interface SellerService {
 	Seller sellerLogin();
 
 	void modifySeller(Seller seller);
-
-	// 문의 조회
 	
 	/**
 	 * 구매자 문의 답변 
@@ -29,4 +27,8 @@ public interface SellerService {
 	 * @param inquiryList
 	 */
 	void replyInquiry(Seller seller, List<Product> productList, List<Inquiry> inquiryList);
+
+  // 문의 조회
+  void printInquiry(Seller seller);
+  
 }

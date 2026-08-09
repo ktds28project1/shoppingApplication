@@ -1,8 +1,13 @@
 package serviceimpl;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import domain.Buyer;
+import domain.Inquiry;
 import domain.Product;
+import domain.Review;
 import domain.Seller;
 import service.ProductService;
 import util.Reader;
@@ -53,7 +58,7 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
-    // 1. 상품 정보 등록(입고)
+    // 상품 정보 등록(입고)
     private void addProduct(Seller seller) {
         System.out.println("\n--- 상품 등록 ---");
         String name = Reader.validateInput("상품 명 : ");
@@ -69,7 +74,7 @@ public class ProductServiceImpl implements ProductService {
         System.out.println("상품 등록이 완료되었습니다. (상품 번호: " + productNum + ")");
     }
 
-    // 2. 상품 재 입고(품절 후 재 입고)
+    // 상품 재 입고(품절 후 재 입고)
     private void restockProduct(Seller seller) {
         System.out.println("\n--- 상품 재 입고 ---");
         long productNum = Reader.readInt("재입고할 상품 번호 : ");
@@ -90,7 +95,7 @@ public class ProductServiceImpl implements ProductService {
         System.out.println("재고가 추가되었습니다. 현재 재고: " + product.getStock() + "개");
     }
 
-    // 3. 상품 정보 삭제 (판매 중단 처리)
+    // 상품 정보 삭제 (판매 중단 처리)
     private void deleteProduct(Seller seller) {
         System.out.println("\n--- 상품 삭제 ---");
         long productNum = Reader.readInt("삭제할 상품 번호 : ");
@@ -103,7 +108,7 @@ public class ProductServiceImpl implements ProductService {
         System.out.println("상품 번호 " + productNum + " 번 상품이 삭제(판매 중단)되었습니다.");
     }
 
-    // 4. 상품 정보 수정 (상품명, 가격, 상품 설명)
+    // 상품 정보 수정 (상품명, 가격, 상품 설명)
     private void updateProduct(Seller seller) {
         System.out.println("\n--- 상품 정보 수정 ---");
         long productNum = Reader.readInt("수정할 상품 번호 : ");
@@ -174,7 +179,7 @@ public class ProductServiceImpl implements ProductService {
 
     
     @Override
-    public void searchProductByKeyword() {
+    public void searchProductByKeyword(List<Seller> sellerList, List<Review> reviewList) {
         final String keyword = Reader.readString("검색어를 입력하세요: ");
 
         List<Product> searchedProducts = new ArrayList<>();
@@ -183,27 +188,56 @@ public class ProductServiceImpl implements ProductService {
                    .forEach(product -> searchedProducts.add(product)); // void
       
 
-        printSearchedProducts(searchedProducts);
+        printSearchedProducts(searchedProducts, sellerList,  reviewList);
     }
     
-    private void printSearchedProducts(List<Product> productList) {
+    private void printSearchedProducts(List<Product> productList, List<Seller> sellerList, List<Review> reviewList) {
       for (Product p : productList) {
         System.out.println("상품 번호: " + p.getProductNumber());
-        System.out.println("판매자 명: " + p.getSeller());	// FIXME 판매자 명 출력하도록 수정 필요
+        System.out.println("판매자 명: " + getSellerByProduct(p, sellerList).getName());
         System.out.println("상품 명: " + p.getName());
         System.out.println("상품 가격: " + p. getPrice());
-        System.out.println("상품 할인 가격: " + p.getPrice());	// FIXME 할인 가격 따로 출력하도록 수정 필요
-        String stockString = p.getStock() <= 0 ? "품절" : p.getStock()+"";
-        System.out.println("상품 재고: " + stockString);
+        System.out.println("상품 할인 가격: ");	// FIXME 할인 가격 따로 출력하도록 수정 필요
+        System.out.println("상품 재고: " + getStockString(p.getStock()));
         System.out.println("누적 구매 횟수: " + p.getBuyCount());
-        System.out.println("별점 평균: ");	// FIXME 별점 평균 출력하도록 수정 
+        System.out.println("별점 평균: " + getAverageRating(getReviewsByProduct(p, reviewList)));
       }
     }
+    
+    private Seller getSellerByProduct(Product product, List<Seller> sellerList) {
+    	return sellerList.stream() // Stream<Seller>
+    			.filter(s -> product.getSeller() == s.getSid()) // Stream<Seller>
+    			.findFirst() // Optional<Seller>
+    			.orElse(null); // Seller
+    }
+    
 
-    @Override
-    public void printProductDetailByNumber() {
+    private String getStockString(int stock) {
+		return stock <= 0 ? "품절" : stock+"";
+	}
+    
+    private List<Review> getReviewsByProduct(Product product, List<Review> reviewList) {
+    	return reviewList.stream() // Stream<Review>
+    			.filter(r -> product.getProductNumber() == r.getProductNumber()) // Steam<Review>
+    			.toList() // List<Review>
+    	;		
+    }
+    
+    private double getAverageRating(List<Review> reviews) {
+    	return reviews.stream() // Stream<Review>
+    			.mapToDouble(Review::getRating) // DoubleSteam
+    			.average() // OptionalDouble
+    			.orElse(0);
+    }
+
+
+	@Override
+    public void printProductDetailByNumber(List<Seller> sellerList, List<Review> reviewList, List<Inquiry> inquiryList, List<Buyer> buyerList) {
       Product product = getProductByNumber();
-      printProductDetail(product);
+      Seller seller = getSellerByProduct(product, sellerList);
+      List<Review> reviews = getReviewsByProduct(product, reviewList);
+      List<Inquiry> inquiries = getInquiriesByProduct(product, inquiryList);
+      printProductDetail(product, seller, reviews, inquiries, buyerList);
     }
     
     private Product getProductByNumber() {
@@ -219,21 +253,62 @@ public class ProductServiceImpl implements ProductService {
     	}
     }
     
-    private void printProductDetail(Product product) {
+    private List<Inquiry> getInquiriesByProduct(Product product, List<Inquiry> inquiryList) {
+    	return inquiryList.stream() // Stream<Inquiry>
+    			.filter(i -> product.getProductNumber() == i.getProductNumber()) // Stream<Inquiry>
+    			.toList() //List<Inquiry>
+    			;
+    }
+    
+    private void printProductDetail(Product product, Seller seller, List<Review> reviews, List<Inquiry> inquiries, List<Buyer> buyerList) {
         System.out.println("상품 번호: " + product.getProductNumber());
         System.out.println("상품 명: " + product.getName());
-        System.out.println("판매자 명: " + product.getSeller());	// FIXME 판매자 명 출력하도록 수정 필요
-        System.out.println("사업자 등록 번호: ");	// FIXME 사업자 등록 번호 출력하도록 수정 필요
-        System.out.println("주소: " );	// FIXME 판매자 사업장 주소지 출력하도록 수정 필요
-        System.out.println("연락처: " );	// FIXME 판매자 연락처 출력하도록 수정 필요
+        System.out.println("판매자 명: " + seller.getName());
+        System.out.println("사업자 등록 번호: " + seller.getSid());	
+        System.out.println("주소: " + seller.getAddress());	
+        System.out.println("연락처: " + seller.getPhoneNumber());	
         System.out.println("누적 구매 횟수: " + product.getBuyCount());
-        System.out.println("리뷰 수: " );	// FIXME 리뷰수 출력 필요
-        System.out.println("별점 평균: ");	// FIXME 별점 평균 출력
-        System.out.println("문의 수: ");	// FIXME 문의 수 출력
+        System.out.println("리뷰 수: " + reviews.size());
+        System.out.println("별점 평균: " + getAverageRating(reviews));
+        System.out.println("문의 수: " + inquiries.size());
         System.out.println("상품 상세 정보: " + product.getDescription());
-        System.out.println("리뷰 목록: ");	// FIXME 리뷰 목록 출력
-        System.out.println("문의 목록: ");	// FIXME 문의 목록 출력
+        System.out.println("리뷰 목록: (" + reviews.size() + ")" + "=".repeat(10));
+        printReviews(reviews, buyerList);
+        System.out.println("문의 목록: (" + inquiries.size() + ")" + "=".repeat(10));
+        printInquiries(inquiries, buyerList);
 	}
+    
+    private void printReviews(List<Review> reviews, List<Buyer> buyerList) {
+		for (Review r : reviews) {
+			System.out.printf("고객 명: %s, 별점: %f\n", getBuyerNameByBuyerId(r.getBuyer(), buyerList), r.getRating());
+			System.out.println("내용: " + r.getContent());
+			System.out.println("-".repeat(30));
+		}
+	}
+    
+    private void printInquiries(List<Inquiry> inquiries, List<Buyer> buyerList) {
+    	for (Inquiry i : inquiries) {
+			System.out.println("고객 명: " + getBuyerNameByBuyerId(i.getBuyer(), buyerList));
+			System.out.println("문의 제목: " + i.getTitle());
+			System.out.println("문의 내용: " + i.getContent());
+			System.out.println("-".repeat(30));
+			if (i.getAnswer() == null) {
+				System.out.println("아직 판매자의 답변이 없습니다.");
+			} else {
+				System.out.println("답변 시간: " + i.getAnswerDate());
+				System.out.println("답변 내용: " + i.getAnswer());
+			}
+		}
+    }
+    
+    private String getBuyerNameByBuyerId(String buyerId, List<Buyer> buyerList) {
+    	return buyerList.stream() // Stream<Buyer>
+    			.filter(b -> b.getUserId() == buyerId) // Stream<Buyer>
+    			.findFirst() // Optional<Buyer>
+    			.orElse(null) // Buyer
+    			.getName() // String
+    			;
+    }
     
 
 }

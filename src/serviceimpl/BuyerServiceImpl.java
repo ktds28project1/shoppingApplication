@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
+
 import domain.Buyer;
 import domain.Inquiry;
 import domain.Order;
@@ -13,6 +14,7 @@ import domain.Seller;
 import domain.User;
 import service.BuyerService;
 import util.Reader;
+import common.ShoppingData;
 
 public class BuyerServiceImpl implements BuyerService {
 	private Map<String, Buyer> buyerMap;
@@ -22,12 +24,12 @@ public class BuyerServiceImpl implements BuyerService {
 	private User user;
 	private List<Order> orderList;
 	
-	public BuyerServiceImpl() {
-		this.buyerMap = new HashMap<>();
+	public BuyerServiceImpl(ShoppingData shoppingData) {
+		this.buyerMap = shoppingData.buyerList();
 		this.sellerMap = new HashMap<>();
 		this.orderList = new ArrayList<>();
 		this.productList = new HashMap<>();
-		this.inquiryList = new HashMap<>();
+		this.inquiryList = shoppingData.inquiryList();
 
 	}
 
@@ -278,5 +280,19 @@ public class BuyerServiceImpl implements BuyerService {
 
 	}
 
+	@Override
+	public void printInquiry(Buyer buyer) {
+		String iquiriedUser = user.getUserId();
+		boolean found = false;
+		for(Inquiry inq : this.inquiryList.values()) {
+			if(inq.getBuyer().equals(iquiriedUser)) {
+				System.out.println(inq);
+				found = true;
+			}
+		}
+		if(!found) {
+			System.out.println("등록된 문의가 없습니다.");
+		}
+	}
 
 }

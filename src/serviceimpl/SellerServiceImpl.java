@@ -1,10 +1,10 @@
 package serviceimpl;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import common.ShoppingData;
 import domain.Inquiry;
 import domain.Product;
 import domain.Seller;
@@ -13,10 +13,15 @@ import util.Reader;
 
 public class SellerServiceImpl implements SellerService {
 	private Map<String, Seller> sellerList;
+	private Map<Long, Inquiry> inquiryList;
+	private Map<Long, Product> productList;
 
 
-	public SellerServiceImpl() {
+	public SellerServiceImpl(ShoppingData shoppingData) {
 		this.sellerList = new HashMap<>();
+		this.inquiryList = shoppingData.inquiryList();
+		this.productList = shoppingData.productList();
+		
 	}
 
 
@@ -152,13 +157,13 @@ public class SellerServiceImpl implements SellerService {
 			System.out.println("해당 상품이 존재하지 않습니다.");
 			return false;
 		} else {
-			return seller.getSid() == product.getSeller();			
+			return seller.getSid().equals(product.getSeller());			
 		}
 	}
 	
 	private Product getProductByNumber(long productNumber, List<Product> productList) {
 		return productList.stream() // Stream<Product>
-				.filter(p -> p.getProductNumber() ==productNumber) // Stream<Product>
+				.filter(p -> p.getProductNumber() == productNumber) // Stream<Product>
 				.findFirst() // Optional<Product>
 				.orElse(null); // Product
 	}
@@ -166,5 +171,36 @@ public class SellerServiceImpl implements SellerService {
 	private String inputInquiryAnswer() {
 		return Reader.validateInput("구매자 문의 답변");
 	}
+	
+	  //구매자 문의 내용 조회
+		@Override
+		public void printInquiry(Seller seller) {
+			boolean found = false;
+			for(Product product : this.productList.values()) {
+				if(product.getSeller().equals(seller.getSid())) {
+					System.out.println(product.getProductNumber() +". "+ product.getName());
+				}
+			}
+			long productNumber = (long)Reader.readInt("문의를 조회하실 상품의 번호를 입력하세요.");
+			Product product = this.productList.get(productNumber);
+			if (product == null) {
+				System.out.println("존재하지 않는 상품입니다.");
+				return;
+			}
+			if(!(product.getSeller().equals(seller.getSid()))) {
+				System.out.println("본인이 판매하는 상품이 아닙니다.");
+				return;
+			}
+			for (Inquiry inq : this.inquiryList.values()) {
+				if (inq.getProductNumber() == productNumber) {
+					System.out.println(inq);
+					found = true;
+				}
+			}
+			if(!found) {
+				System.out.println("등록된 문의가 없습니다.");
+			}
+		}
+  
 
 }
