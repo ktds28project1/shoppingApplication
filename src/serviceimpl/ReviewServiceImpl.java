@@ -3,20 +3,28 @@ package serviceimpl;
 import domain.Buyer;
 import domain.Order;
 import domain.Review;
-import domain.Seller;
 import service.ReviewService;
 import util.Reader;
 
 import java.util.List;
 import java.util.Map;
 
+import common.ShoppingData;
+
 public class ReviewServiceImpl implements ReviewService {
 
+	private List<Order> orderList;
+	
     private Map<Long, Review> reviewMap;
     private long reviewSeq = 1L; // 리뷰 번호 자동 생성
 
+    public ReviewServiceImpl(ShoppingData data){
+    	this.orderList = data.orderList().values().stream().toList();
+    	this.reviewMap = data.reviewList();
+    }
+    
     @Override
-    public void addReview(Buyer buyer, List<Order> orderList) {
+    public void addReview(Buyer buyer) {
         if (buyer == null) {
             System.out.println("로그인이 필요한 기능입니다.");
             return;

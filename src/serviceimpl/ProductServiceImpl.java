@@ -1,24 +1,35 @@
 package serviceimpl;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
+import common.ShoppingData;
 import domain.Buyer;
 import domain.Inquiry;
 import domain.Product;
 import domain.Review;
 import domain.Seller;
+import main.menus.ProductMenu;
 import service.ProductService;
+import util.MenuRender;
 import util.Reader;
 
 public class ProductServiceImpl implements ProductService {
 
     private List<Product> productList;
     private long productSeq = 1000L; // 상품번호 생성
-
-    public ProductServiceImpl() {
-        this.productList = new ArrayList<>();
+    
+    private List<Seller> sellerList;
+    private List<Review> reviewList;
+    private List<Inquiry> inquiryList;
+    private List<Buyer> buyerList;
+    
+    public ProductServiceImpl(ShoppingData data) {
+        this.productList = data.productList().values().stream().toList();
+        this.sellerList = data.sellerList().values().stream().toList();
+        this.reviewList = data.reviewList().values().stream().toList();
+        this.inquiryList = data.inquiryList().values().stream().toList();
+        this.buyerList = data.buyerList().values().stream().toList();
     }
 
     @Override
@@ -27,7 +38,13 @@ public class ProductServiceImpl implements ProductService {
             System.out.println("로그인이 필요한 기능입니다.");
             return;
         }
-
+        
+        String title = "\n=== [" + seller.getOwnerName() + "] 상품 관리 메뉴 ===";
+        String back = "이전 메뉴로 돌아가기";
+        
+        MenuRender.render(title, back, ProductMenu.values(), this, seller);
+        
+        /* 상단 MenuRender 로 대체
         while (true) {
             System.out.println("\n=== [" + seller.getOwnerName() + "] 상품 관리 메뉴 ===");
             System.out.println("1. 상품 정보 등록(입고)");
@@ -56,10 +73,11 @@ public class ProductServiceImpl implements ProductService {
                 System.out.println("올바른 번호를 입력해주세요.");
             }
         }
+        */
     }
 
     // 상품 정보 등록(입고)
-    private void addProduct(Seller seller) {
+    public void addProduct(Seller seller) {
         System.out.println("\n--- 상품 등록 ---");
         String name = Reader.validateInput("상품 명 : ");
         int price = Reader.readInt("상품 가격(할인 전 가격) : ");
@@ -75,7 +93,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     // 상품 재 입고(품절 후 재 입고)
-    private void restockProduct(Seller seller) {
+    public void restockProduct(Seller seller) {
         System.out.println("\n--- 상품 재 입고 ---");
         long productNum = Reader.readInt("재입고할 상품 번호 : ");
         Product product = findMyProduct(seller, productNum);
@@ -96,7 +114,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     // 상품 정보 삭제 (판매 중단 처리)
-    private void deleteProduct(Seller seller) {
+    public void deleteProduct(Seller seller) {
         System.out.println("\n--- 상품 삭제 ---");
         long productNum = Reader.readInt("삭제할 상품 번호 : ");
         Product product = findMyProduct(seller, productNum);
@@ -109,7 +127,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     // 상품 정보 수정 (상품명, 가격, 상품 설명)
-    private void updateProduct(Seller seller) {
+    public void updateProduct(Seller seller) {
         System.out.println("\n--- 상품 정보 수정 ---");
         long productNum = Reader.readInt("수정할 상품 번호 : ");
         Product product = findMyProduct(seller, productNum);
@@ -141,7 +159,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     // 내 상품 목록 조회
-    private void printMyProducts(Seller seller) {
+    public void printMyProducts(Seller seller) {
         System.out.println("\n--- 내 등록 상품 목록 ---");
         boolean hasProduct = false;
 
@@ -177,9 +195,8 @@ public class ProductServiceImpl implements ProductService {
         return null;
     }
 
-    
     @Override
-    public void searchProductByKeyword(List<Seller> sellerList, List<Review> reviewList) {
+    public void searchProductByKeyword() {
         final String keyword = Reader.readString("검색어를 입력하세요: ");
 
         List<Product> searchedProducts = new ArrayList<>();
@@ -232,7 +249,7 @@ public class ProductServiceImpl implements ProductService {
 
 
 	@Override
-    public void printProductDetailByNumber(List<Seller> sellerList, List<Review> reviewList, List<Inquiry> inquiryList, List<Buyer> buyerList) {
+    public void printProductDetailByNumber() {
       Product product = getProductByNumber();
       Seller seller = getSellerByProduct(product, sellerList);
       List<Review> reviews = getReviewsByProduct(product, reviewList);
