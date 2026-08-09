@@ -114,9 +114,13 @@ public class SellerServiceImpl implements SellerService {
 
 
 	@Override
-	public void replyInquiry(List<Inquiry> inquiryList) {
+	public void replyInquiry(Seller seller, List<Product> productList, List<Inquiry> inquiryList) {
 		Inquiry inquiry = getInquiryByNumber(inquiryList);
-		inquiry.setAnswer(inputInquiryAnswer());
+		if (isSellersProduct(seller, inquiry, productList)) {
+			inquiry.setAnswer(inputInquiryAnswer());			
+		} else {
+			System.out.println("로그인한 판매자의 상품이 아닙니다.");
+		}
 	}
 	  
 	private Inquiry getInquiryByNumber(List<Inquiry> inquiryList) {
@@ -130,6 +134,23 @@ public class SellerServiceImpl implements SellerService {
 	    	}
 	    	System.out.println("해당 번호의 문의가 존재하지 않습니다. 다시 입력해주세요.");
 	    }
+	}
+	
+	private boolean isSellersProduct(Seller seller, Inquiry inquiry, List<Product> productList) {
+		Product product = getProductByNumber(inquiry.getProductNumber(), productList);
+		if (product == null) {
+			System.out.println("해당 상품이 존재하지 않습니다.");
+			return false;
+		} else {
+			return seller.getSid() == product.getSeller();			
+		}
+	}
+	
+	private Product getProductByNumber(long productNumber, List<Product> productList) {
+		return productList.stream() // Stream<Product>
+				.filter(p -> p.getProductNumber() ==productNumber) // Stream<Product>
+				.findFirst() // Optional<Product>
+				.orElse(null); // Product
 	}
 	  
 	private String inputInquiryAnswer() {
