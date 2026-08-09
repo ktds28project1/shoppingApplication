@@ -1,7 +1,5 @@
 package serviceimpl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
@@ -11,8 +9,9 @@ import domain.Inquiry;
 import domain.Order;
 import domain.Product;
 import domain.Seller;
-import domain.User;
 import service.BuyerService;
+import service.ProductService;
+import service.ReviewService;
 import util.Reader;
 import common.ShoppingData;
 
@@ -21,16 +20,19 @@ public class BuyerServiceImpl implements BuyerService {
 	private Map<String, Seller> sellerMap;
 	private Map<Long, Inquiry> inquiryList;
 	private Map<Long, Product> productList;
-	private User user;
 	private List<Order> orderList;
+	
+	private ProductService productService;
+	private ReviewService reviewService;
 	
 	public BuyerServiceImpl(ShoppingData shoppingData) {
 		this.buyerMap = shoppingData.buyerList();
-		this.sellerMap = new HashMap<>();
-		this.orderList = new ArrayList<>();
-		this.productList = new HashMap<>();
+		this.sellerMap = shoppingData.sellerList();
+		this.orderList = shoppingData.orderList().values().stream().toList();
+		this.productList = shoppingData.productList();
 		this.inquiryList = shoppingData.inquiryList();
-
+		this.productService = new ProductServiceImpl(shoppingData);
+		this.reviewService = new ReviewServiceImpl(shoppingData);
 	}
 
 	public boolean findUserId(String userId) {
@@ -142,7 +144,7 @@ public class BuyerServiceImpl implements BuyerService {
 	}
 
 	@Override
-	public void buyProduct(Buyer buyer, Map<Long, Product> productMap) {
+	public void buyProduct(Buyer buyer) {
 		//회원 정보 확인
 		if (buyer == null || !buyer.isActive()) {
 			System.out.println("회원정보가 확인되지 않습니다. 다시 로그인 해주세요.");
@@ -150,7 +152,7 @@ public class BuyerServiceImpl implements BuyerService {
 		}
 		
 		//상점 상품 등록 여부 확인
-		if (productMap == null || productMap.isEmpty()) {
+		if (productList == null || productList.isEmpty()) {
 			System.out.println("등록된 상품이 없습니다.");
 			return;
 		}
@@ -159,13 +161,13 @@ public class BuyerServiceImpl implements BuyerService {
 		System.out.println("\n 상품 구매");
 		long productNum = Reader.readInt("구매하실 상품 번호를 입력해주세요: ");
 		
-		if(!productMap.containsKey(productNum)) {
+		if(!productList.containsKey(productNum)) {
 			System.out.println("유효하지 않은 상품번호입니다.");
 			return;
 		}
 		
 		// 상품 구매 가능 여부 확인
-		Product product = productMap.get(productNum);
+		Product product = productList.get(productNum);
 	    if (product == null) {
 	    	System.out.println("상품 정보가 존재하지 않습니다.");
 	    }
@@ -258,7 +260,7 @@ public class BuyerServiceImpl implements BuyerService {
 	}
 
 	@Override
-	public void addInquiry() {
+	public void addInquiry(Buyer buyer) {
 
 		long inquiryNumber = this.inquiryList.size() + 1;
 
@@ -267,7 +269,7 @@ public class BuyerServiceImpl implements BuyerService {
 		// 상품번호가 맞지않을 경우
 		notFoundProductNumber(productNumber);
 
-		String inquiryUserId = this.user.getUserId();
+		String inquiryUserId = buyer.getUserId();
 		String title = Reader.readString("문의 제목 ");
 
 		String content = Reader.readString("문의 내용을 작성해주세요");
@@ -320,7 +322,7 @@ public class BuyerServiceImpl implements BuyerService {
 
 	@Override
 	public void printInquiry(Buyer buyer) {
-		String iquiriedUser = user.getUserId();
+		String iquiriedUser = buyer.getUserId();
 		boolean found = false;
 		for(Inquiry inq : this.inquiryList.values()) {
 			if(inq.getBuyer().equals(iquiriedUser)) {
@@ -333,4 +335,19 @@ public class BuyerServiceImpl implements BuyerService {
 		}
 	}
 
+	
+	@Override
+	public void searchProductByKeyword(Buyer buyer) {
+		this.productService.searchProductByKeyword();
+	}
+	
+	@Override
+	public void printProductDetailByNumber(Buyer buyer) {
+		this.productService.printProductDetailByNumber();
+	}
+	
+	@Override
+	public void addReview(Buyer buyer) {
+		this.reviewService.addReview(buyer);
+	}
 }

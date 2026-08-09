@@ -1,13 +1,13 @@
 package serviceimpl;
 
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import common.ShoppingData;
 import domain.Inquiry;
 import domain.Product;
 import domain.Seller;
+import service.ProductService;
 import service.SellerService;
 import util.Reader;
 
@@ -15,13 +15,13 @@ public class SellerServiceImpl implements SellerService {
 	private Map<String, Seller> sellerList;
 	private Map<Long, Inquiry> inquiryList;
 	private Map<Long, Product> productList;
-
+	private ProductService product;
 
 	public SellerServiceImpl(ShoppingData shoppingData) {
-		this.sellerList = new HashMap<>();
+		this.sellerList = shoppingData.sellerList();
 		this.inquiryList = shoppingData.inquiryList();
 		this.productList = shoppingData.productList();
-		
+		this.product = new ProductServiceImpl(shoppingData);
 	}
 
 
@@ -117,15 +117,15 @@ public class SellerServiceImpl implements SellerService {
         System.out.println("정보 수정이 완료되었습니다.");
 	}
 
-
+	// 문의 답변
 	@Override
-	public void replyInquiry(Seller seller, List<Product> productList, List<Inquiry> inquiryList) {
-		Inquiry inquiry = getInquiryByNumber(inquiryList);
-		if (canAnswer(seller, inquiry, productList)) {
+	public void replyInquiry(Seller seller) {
+		Inquiry inquiry = getInquiryByNumber(this.inquiryList.values().stream().toList());
+		if (canAnswer(seller, inquiry, this.productList.values().stream().toList())) {
 			inquiry.setAnswer(inputInquiryAnswer());			
 		}
 	}
-	  
+	
 	private Inquiry getInquiryByNumber(List<Inquiry> inquiryList) {
 		long inquiryNumber = 0;
 	    while (true) {
@@ -202,5 +202,8 @@ public class SellerServiceImpl implements SellerService {
 			}
 		}
   
-
+		@Override
+		public void manageProducts(Seller seller) {
+			this.product.manageProducts(seller);
+		}
 }

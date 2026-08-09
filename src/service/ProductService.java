@@ -1,10 +1,5 @@
 package service;
 
-import java.util.List;
-
-import domain.Buyer;
-import domain.Inquiry;
-import domain.Review;
 import domain.Seller;
 
 public interface ProductService {
@@ -20,7 +15,7 @@ public interface ProductService {
      * @param sellerList
      * @param reviewList
      */
-    void searchProductByKeyword(List<Seller> sellerList, List<Review> reviewList);
+    void searchProductByKeyword();
     
     /**
      * 상품 상세 조회 메소드
@@ -32,7 +27,7 @@ public interface ProductService {
      * @param inquiryList
      * @param buyerList
      */
-    void printProductDetailByNumber(List<Seller> sellerList, List<Review> reviewList, List<Inquiry> inquiryList, List<Buyer> buyerList);
+    void printProductDetailByNumber();
     
 
 }

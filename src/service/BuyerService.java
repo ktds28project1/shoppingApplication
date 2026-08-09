@@ -1,10 +1,6 @@
 package service;
 
-import java.util.Map;
-
 import domain.Buyer;
-import domain.Product;
-import domain.Seller;
 
 public interface BuyerService {
 
@@ -27,15 +23,21 @@ public interface BuyerService {
 	 * @throws IllegalStateException 이미 탈퇴한 사용자인 경우 예외 발생
 	 */
 	void deleteBuyer(Buyer buyer);
-	
 
+	// 상품 조회
+	void searchProductByKeyword(Buyer buyer);
+
+	// 상품 상세 조회
+	void printProductDetailByNumber(Buyer buyer);
+	
 	// 상품 구매
-	void buyProduct(Buyer buyer, Map<Long, Product> productMap);
+	void buyProduct(Buyer buyer);
 	
 	// 상품 리뷰 등록
+	void addReview(Buyer buyer);
 	
 	// 상품 문의 등록
-	void addInquiry();
+	void addInquiry(Buyer buyer);
 
 	// 거래 목록 조회
 	void printOrderList(Buyer buyer);
