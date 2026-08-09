@@ -53,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
-    // 1. 상품 정보 등록(입고)
+    // 상품 정보 등록(입고)
     private void addProduct(Seller seller) {
         System.out.println("\n--- 상품 등록 ---");
         String name = Reader.validateInput("상품 명 : ");
@@ -69,7 +69,7 @@ public class ProductServiceImpl implements ProductService {
         System.out.println("상품 등록이 완료되었습니다. (상품 번호: " + productNum + ")");
     }
 
-    // 2. 상품 재 입고(품절 후 재 입고)
+    // 상품 재 입고(품절 후 재 입고)
     private void restockProduct(Seller seller) {
         System.out.println("\n--- 상품 재 입고 ---");
         long productNum = Reader.readInt("재입고할 상품 번호 : ");
@@ -90,7 +90,7 @@ public class ProductServiceImpl implements ProductService {
         System.out.println("재고가 추가되었습니다. 현재 재고: " + product.getStock() + "개");
     }
 
-    // 3. 상품 정보 삭제 (판매 중단 처리)
+    // 상품 정보 삭제 (판매 중단 처리)
     private void deleteProduct(Seller seller) {
         System.out.println("\n--- 상품 삭제 ---");
         long productNum = Reader.readInt("삭제할 상품 번호 : ");
@@ -103,7 +103,7 @@ public class ProductServiceImpl implements ProductService {
         System.out.println("상품 번호 " + productNum + " 번 상품이 삭제(판매 중단)되었습니다.");
     }
 
-    // 4. 상품 정보 수정 (상품명, 가격, 상품 설명)
+    // 상품 정보 수정 (상품명, 가격, 상품 설명)
     private void updateProduct(Seller seller) {
         System.out.println("\n--- 상품 정보 수정 ---");
         long productNum = Reader.readInt("수정할 상품 번호 : ");
