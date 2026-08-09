@@ -24,6 +24,7 @@ public final class MenuRender {
 				break;
 			} else {
 				menus[answer-1].order(service, target);
+				Reader.readString("실행 완료");
 			}
 		}
 	}

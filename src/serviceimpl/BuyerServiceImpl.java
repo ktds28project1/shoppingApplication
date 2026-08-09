@@ -111,8 +111,9 @@ public class BuyerServiceImpl implements BuyerService {
 
 	@Override
 	public void modifyBuyer(Buyer buyer) {
-		this.setBuyer(buyer, "탈퇴한 사용자 수정 발생", () -> true, () -> {
-			// FIXME 입력 유효성 검사 유무 확인 필요
+		this.setBuyer(buyer, "탈퇴한 사용자 수정 발생", 
+				() -> buyer.getPassword() == Reader.readString("비밀번호 재입력: ") , 
+				() -> {
 			buyer.setName(Reader.readString("변경할 이름: "));
 			buyer.setPassword(Reader.readString("변경할 비밀번호: "));
 			buyer.setAddress(Reader.readString("변경할 주소: "));
@@ -122,25 +123,20 @@ public class BuyerServiceImpl implements BuyerService {
 
 	@Override
 	public void deleteBuyer(Buyer buyer) {
-		this.setBuyer(buyer, "탈퇴한 사용자 재탈퇴 시도 발생", () -> buyer.getUserId() == Reader.readString("아이디를 입력하세요: "),
+		this.setBuyer(buyer, "탈퇴한 사용자 재탈퇴 시도 발생", 
+				() -> buyer.getUserId() == Reader.readString("아이디 재입력: ") && buyer.getPassword() == Reader.readString("비밀번호 재입력: "),
 				() -> buyer.setActive(false));
 	}
-
 
 	private void setBuyer(Buyer buyer, String err, Supplier<Boolean> check, Runnable action) {
 		if (!buyer.isActive()) {
 			throw new IllegalStateException(err);
 		}
-		if (!check.get()) {
-			System.out.println("아이디가 틀렸습니다.");
+		if (check.get()) {
+			System.out.println("인증 실패");
+			return;
 		}
-		
-		String password = Reader.readString("비밀번호를 입력해주세요: ");
-		if (buyer.getPassword().equals(password)) {
-			action.run();
-		} else {
-			System.out.println("비밀번호를 틀렸습니다.");
-		}
+		action.run();
 	}
 
 	@Override
