@@ -1,5 +1,8 @@
 package service;
 
+import java.util.List;
+
+import domain.Inquiry;
 import domain.Seller;
 
 public interface SellerService {
@@ -15,5 +18,5 @@ public interface SellerService {
 	// 문의 조회
 	
 	// 문의 답변
-	void replyInquiry(int inquiryNumber);
+	void replyInquiry(List<Inquiry> inquiryList);
 }

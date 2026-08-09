@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import domain.Inquiry;
 import domain.Product;
 import domain.Seller;
 import service.SellerService;
@@ -112,10 +113,27 @@ public class SellerServiceImpl implements SellerService {
 	}
 
 
-  @Override
-  public void replyInquiry(int inquiryNumber) {
-    // TODO Auto-generated method stub
-    
-  }
+	@Override
+	public void replyInquiry(List<Inquiry> inquiryList) {
+		Inquiry inquiry = getInquiryByNumber(inquiryList);
+		inquiry.setAnswer(inputInquiryAnswer());
+	}
+	  
+	private Inquiry getInquiryByNumber(List<Inquiry> inquiryList) {
+		long inquiryNumber = 0;
+	    while (true) {
+	    	inquiryNumber = Reader.readInt("답변할 문의 번호를 입력하세요: ");
+	    	for (Inquiry i : inquiryList) {
+	    		if (i.getInquiryNumber() == inquiryNumber) {
+	    			return i;
+	    		}
+	    	}
+	    	System.out.println("해당 번호의 문의가 존재하지 않습니다. 다시 입력해주세요.");
+	    }
+	}
+	  
+	private String inputInquiryAnswer() {
+		return Reader.validateInput("구매자 문의 답변");
+	}
 
 }
