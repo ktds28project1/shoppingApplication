@@ -276,6 +276,44 @@ public class BuyerServiceImpl implements BuyerService {
 
 	public void printOrderList(Buyer buyer) {
 
+		boolean hasOrder = false;
+		
+		if (buyer == null || !buyer.isActive()) {
+			System.out.println("회원정보가 확인되지 않습니다. 다시 로그인 해주세요.");
+			return;			
+		}
+		
+		if (this.orderList == null || this.orderList.isEmpty()) {
+			System.out.println("구매한 거래 내역이 없습니다.");
+			return;
+		}
+		
+		for (Order order : this.orderList) {
+			if (order == null) {
+				continue;
+			}
+			
+			if (buyer.getUserId().equals(order.getBuyer())) {
+				System.out.println("=".repeat(30));
+				System.out.println("주문 번호   : " + order.getOrderNumber());
+				System.out.println("주문 일시   : " + order.getOrderDate());
+				System.out.println("상품 번호   : " + order.getProduct());
+				System.out.println("구매 수량   : " + order.getQuantity() + "개");
+				System.out.println("사용 포인트 : " + order.getUsePoint() + "P");
+				System.out.println("결제 금액   : " + order.getPrice() + "원");
+				System.out.println("배송 주소   : " + order.getAddress());
+				System.out.println("수령인     : " + order.getName() + " (" + order.getPhone() + ")");
+				System.out.println("결제 계좌   : " + order.getAccount());
+				hasOrder = true;
+			}
+			
+			if (!hasOrder) {
+				System.out.println("구매한 거래 내역이 없습니다.");
+			} else {
+				System.out.println("=".repeat(30));
+			}
+			
+		}
 	}
 
 
