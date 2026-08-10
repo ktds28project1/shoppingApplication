@@ -1,6 +1,5 @@
 package serviceimpl;
 
-import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -20,7 +19,7 @@ public class BuyerServiceImpl implements BuyerService {
 	private Map<String, Seller> sellerMap;
 	private Map<Long, Inquiry> inquiryList;
 	private Map<Long, Product> productList;
-	private List<Order> orderList;
+	private Map<Long, Order> orderList;
 	
 	private ProductService productService;
 	private ReviewService reviewService;
@@ -28,7 +27,7 @@ public class BuyerServiceImpl implements BuyerService {
 	public BuyerServiceImpl(ShoppingData shoppingData) {
 		this.buyerMap = shoppingData.buyerList();
 		this.sellerMap = shoppingData.sellerList();
-		this.orderList = shoppingData.orderList().values().stream().toList();
+		this.orderList = shoppingData.orderList();
 		this.productList = shoppingData.productList();
 		this.inquiryList = shoppingData.inquiryList();
 		this.productService = new ProductServiceImpl(shoppingData);
@@ -249,7 +248,7 @@ public class BuyerServiceImpl implements BuyerService {
 	        recipientPhone,
 	        account
 	    );
-	    this.orderList.add(order);
+	    this.orderList.put(newOrderNumber, order);
 	    
 	    System.out.println("상품 구매 완료");
 	    
@@ -289,7 +288,7 @@ public class BuyerServiceImpl implements BuyerService {
 			return;
 		}
 		
-		for (Order order : this.orderList) {
+		for (Order order : this.orderList.values()) {
 			if (order == null) {
 				continue;
 			}

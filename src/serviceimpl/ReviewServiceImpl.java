@@ -6,20 +6,19 @@ import domain.Review;
 import service.ReviewService;
 import util.Reader;
 
-import java.util.List;
 import java.util.Map;
 
 import common.ShoppingData;
 
 public class ReviewServiceImpl implements ReviewService {
 
-	private List<Order> orderList;
+	private Map<Long, Order> orderList;
 	
     private Map<Long, Review> reviewMap;
     private long reviewSeq = 1L; // 리뷰 번호 자동 생성
 
     public ReviewServiceImpl(ShoppingData data){
-    	this.orderList = data.orderList().values().stream().toList();
+    	this.orderList = data.orderList();
     	this.reviewMap = data.reviewList();
     }
     
@@ -35,7 +34,7 @@ public class ReviewServiceImpl implements ReviewService {
         // 리뷰 작성이 가능한 본인의 구매 내역 출력
         boolean hasOrder = false;
         System.out.println("[나의 구매 내역]");
-        for (Order order : orderList) {
+        for (Order order : orderList.values()) {
             if (order.getBuyer().equals(buyer.getUserId())) {
                 System.out.println("- 주문번호: " + order.getOrderNumber() + " | 상품번호: " + order.getProduct() + " | 수량: " + order.getQuantity());
                 hasOrder = true;
@@ -51,7 +50,7 @@ public class ReviewServiceImpl implements ReviewService {
         long targetProductNum = (long) Reader.readInt("\n리뷰를 작성할 상품 번호를 입력해주세요: ");
 
         boolean canReview = false;
-        for (Order order : orderList) {
+        for (Order order : orderList.values()) {
             if (order.getBuyer().equals(buyer.getUserId()) && order.getProduct() == targetProductNum) {
                 canReview = true;
                 break;

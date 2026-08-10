@@ -2,6 +2,7 @@ package serviceimpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import common.ShoppingData;
 import domain.Buyer;
@@ -16,20 +17,20 @@ import util.Reader;
 
 public class ProductServiceImpl implements ProductService {
 
-    private List<Product> productList;
+    private Map<Long, Product> productList;
     private long productSeq = 1000L; // 상품번호 생성
     
-    private List<Seller> sellerList;
-    private List<Review> reviewList;
-    private List<Inquiry> inquiryList;
-    private List<Buyer> buyerList;
+    private Map<String, Seller> sellerList;
+    private Map<Long, Review> reviewList;
+    private Map<Long, Inquiry> inquiryList;
+    private Map<String, Buyer> buyerList;
     
     public ProductServiceImpl(ShoppingData data) {
-        this.productList = data.productList().values().stream().toList();
-        this.sellerList = data.sellerList().values().stream().toList();
-        this.reviewList = data.reviewList().values().stream().toList();
-        this.inquiryList = data.inquiryList().values().stream().toList();
-        this.buyerList = data.buyerList().values().stream().toList();
+        this.productList = data.productList();
+        this.sellerList = data.sellerList();
+        this.reviewList = data.reviewList();
+        this.inquiryList = data.inquiryList();
+        this.buyerList = data.buyerList();
     }
 
     @Override
@@ -87,7 +88,7 @@ public class ProductServiceImpl implements ProductService {
         long productNum = ++productSeq;
         Product product = new Product(productNum, seller.getSid(), name, price, stock, description);
 
-        productList.add(product);
+        productList.put(productNum, product);
 
         System.out.println("상품 등록이 완료되었습니다. (상품 번호: " + productNum + ")");
     }
@@ -163,7 +164,7 @@ public class ProductServiceImpl implements ProductService {
         System.out.println("\n--- 내 등록 상품 목록 ---");
         boolean hasProduct = false;
 
-        for (Product product : productList) {
+        for (Product product : productList.values()) {
             if (product.getSeller().equals(seller.getSid()) && product.isActive()) {
                 System.out.printf("[%d] %s | 가격: %d원 | 재고: %d개 | 설명: %s\n",
                         product.getProductNumber(),
@@ -181,7 +182,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     private Product findMyProduct(Seller seller, long productNumber) {
-        for (Product product : productList) {
+        for (Product product : productList.values()) {
             if (product.getProductNumber() == productNumber) {
                 if (!product.getSeller().equals(seller.getSid())) {
                     System.out.println("해당 상품을 관리할 권한이 없습니다.");
@@ -200,12 +201,12 @@ public class ProductServiceImpl implements ProductService {
         final String keyword = Reader.readString("검색어를 입력하세요: ");
 
         List<Product> searchedProducts = new ArrayList<>();
-        this.productList.stream() // Stream<Product>
+        this.productList.values().stream() // Stream<Product>
                    .filter(product -> product.getName().contains(keyword)) // Stream<Product>
                    .forEach(product -> searchedProducts.add(product)); // void
       
 
-        printSearchedProducts(searchedProducts, sellerList,  reviewList);
+        printSearchedProducts(searchedProducts, sellerList.values().stream().toList(),  reviewList.values().stream().toList());
     }
     
     private void printSearchedProducts(List<Product> productList, List<Seller> sellerList, List<Review> reviewList) {
@@ -251,17 +252,17 @@ public class ProductServiceImpl implements ProductService {
 	@Override
     public void printProductDetailByNumber() {
       Product product = getProductByNumber();
-      Seller seller = getSellerByProduct(product, sellerList);
-      List<Review> reviews = getReviewsByProduct(product, reviewList);
-      List<Inquiry> inquiries = getInquiriesByProduct(product, inquiryList);
-      printProductDetail(product, seller, reviews, inquiries, buyerList);
+      Seller seller = getSellerByProduct(product, sellerList.values().stream().toList());
+      List<Review> reviews = getReviewsByProduct(product, reviewList.values().stream().toList());
+      List<Inquiry> inquiries = getInquiriesByProduct(product, inquiryList.values().stream().toList());
+      printProductDetail(product, seller, reviews, inquiries, buyerList.values().stream().toList());
     }
     
     private Product getProductByNumber() {
         long productNumber = 0;
         while (true) {
         	productNumber = Reader.readInt("상세 조회할 상품 번호를 입력하세요: ");
-        	for (Product p : this.productList) {
+        	for (Product p : this.productList.values()) {
         		if (p.getProductNumber() == productNumber) {
         			return p;
     			}
