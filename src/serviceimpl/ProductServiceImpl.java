@@ -205,7 +205,7 @@ public class ProductServiceImpl implements ProductService {
                    .forEach(product -> searchedProducts.add(product)); // void
       
 
-        printSearchedProducts(searchedProducts, sellerList,  reviewList);
+        printSearchedProducts(searchedProducts, this.sellerList,  this.reviewList);
     }
     
     private void printSearchedProducts(List<Product> productList, List<Seller> sellerList, List<Review> reviewList) {
@@ -251,10 +251,10 @@ public class ProductServiceImpl implements ProductService {
 	@Override
     public void printProductDetailByNumber() {
       Product product = getProductByNumber();
-      Seller seller = getSellerByProduct(product, sellerList);
-      List<Review> reviews = getReviewsByProduct(product, reviewList);
-      List<Inquiry> inquiries = getInquiriesByProduct(product, inquiryList);
-      printProductDetail(product, seller, reviews, inquiries, buyerList);
+      Seller seller = getSellerByProduct(product, this.sellerList);
+      List<Review> reviews = getReviewsByProduct(product, this.reviewList);
+      List<Inquiry> inquiries = getInquiriesByProduct(product, this.inquiryList);
+      printProductDetail(product, seller, reviews, inquiries, this.buyerList);
     }
     
     private Product getProductByNumber() {
